@@ -173,27 +173,43 @@ public class FileSSLServerSocket {
     }
 
     private static boolean registerUser(String username, String password) {
+        // Verificar si el usuario ya existe
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement checkUser = conn.prepareStatement("SELECT COUNT(*) FROM usuarios WHERE username = ?")) {
+    
+            checkUser.setString(1, username);
+            ResultSet rs = checkUser.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("El usuario ya existe.");
+                // El usuario ya existe
+                return false;
+                
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    
+        // Si el usuario no existe, proceder con el registro
         String salt = generateSalt();
         String hashedPassword = hashPassword(password, salt);
-
+    
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement("INSERT INTO usuarios (username, password, salt) VALUES (?, ?, ?)")) {
-
+    
             pstmt.setString(1, username);
             pstmt.setString(2, hashedPassword);
             SaltManager.saveSalt(username, salt); // Guarda la salt cifrada
             pstmt.setString(3, "encrypted"); // Indica que la salt está almacenada cifrada externamente
             pstmt.executeUpdate();
             return true;
-
+    
         } catch (SQLException e) {
-            if (e.getErrorCode() == 19) { // Código de error para violación de restricción UNIQUE
-                return false;
-            }
             e.printStackTrace();
             return false;
         }
     }
+    
 
     private static boolean loginUser(String username, String password) {
         try (Connection conn = DriverManager.getConnection(DB_URL);

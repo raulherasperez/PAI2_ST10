@@ -32,21 +32,24 @@ public class SSLClientGUI {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(trustStore);
 
-            SSLContext sslContext = SSLContext.getInstance("TLS");
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.3"); // Asegura uso de TLS 1.3
             sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
 
             SSLSocketFactory factory = sslContext.getSocketFactory();
             socket = (SSLSocket) factory.createSocket("localhost", 3343);
-            socket.setEnabledProtocols(new String[]{"TLSv1.2"});
+
+            // Habilitar solo TLS 1.3 y sus cifrados compatibles
+            socket.setEnabledProtocols(new String[]{"TLSv1.3"});
             socket.setEnabledCipherSuites(new String[]{
-                    "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-                    "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+                    "TLS_AES_128_GCM_SHA256",
+                    "TLS_AES_256_GCM_SHA384",
+                    "TLS_CHACHA20_POLY1305_SHA256"
             });
 
             output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error initializing SSL connection", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error initializing SSL connection: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
     }
@@ -81,10 +84,14 @@ public class SSLClientGUI {
         loginButton.addActionListener(e -> sendRequest("login"));
         registerButton.addActionListener(e -> sendRequest("register"));
 
-        gbc.gridy = 0; panel.add(usernameField, gbc);
-        gbc.gridy = 1; panel.add(passwordField, gbc);
-        gbc.gridy = 2; panel.add(loginButton, gbc);
-        gbc.gridy = 3; panel.add(registerButton, gbc);
+        gbc.gridy = 0;
+        panel.add(usernameField, gbc);
+        gbc.gridy = 1;
+        panel.add(passwordField, gbc);
+        gbc.gridy = 2;
+        panel.add(loginButton, gbc);
+        gbc.gridy = 3;
+        panel.add(registerButton, gbc);
 
         return panel;
     }
@@ -103,13 +110,17 @@ public class SSLClientGUI {
         sendMessageButton.addActionListener(e -> sendMessage());
         logoutButton.addActionListener(e -> logout());
 
-        gbc.gridy = 0; panel.add(messageField, gbc);
-        gbc.gridy = 1; panel.add(sendMessageButton, gbc);
-        gbc.gridy = 2; panel.add(logoutButton, gbc);
+        gbc.gridy = 0;
+        panel.add(messageField, gbc);
+        gbc.gridy = 1;
+        panel.add(sendMessageButton, gbc);
+        gbc.gridy = 2;
+        panel.add(logoutButton, gbc);
 
         responseArea = new JTextArea(5, 20);
         responseArea.setEditable(false);
-        gbc.gridy = 3; panel.add(new JScrollPane(responseArea), gbc);
+        gbc.gridy = 3;
+        panel.add(new JScrollPane(responseArea), gbc);
 
         return panel;
     }
@@ -147,6 +158,7 @@ public class SSLClientGUI {
                     field.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (field.getText().isEmpty()) {
@@ -174,11 +186,10 @@ public class SSLClientGUI {
     
             String response = input.readLine();
             responseArea.append(response + "\n");
-    
-            // Mostrar respuesta en una ventana emergente
+
             JOptionPane.showMessageDialog(frame, response, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
-    
-            if (response.equals("Login Successful")) {
+
+            if ("Login Successful".equals(response)) {
                 sessionActive = true;
                 tabbedPane.setEnabledAt(1, true);
                 tabbedPane.setSelectedIndex(1);
