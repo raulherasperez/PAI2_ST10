@@ -161,20 +161,23 @@ public class SSLClientGUI {
         try {
             String userName = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
-
+    
             if (userName.isEmpty() || password.isEmpty()) {
                 responseArea.append("Ingrese usuario y contraseña.\n");
                 return;
             }
-
+    
             output.println(action);
             output.println(userName);
             output.println(password);
             output.flush();
-
+    
             String response = input.readLine();
             responseArea.append(response + "\n");
-
+    
+            // Mostrar respuesta en una ventana emergente
+            JOptionPane.showMessageDialog(frame, response, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    
             if (response.equals("Login Successful")) {
                 sessionActive = true;
                 tabbedPane.setEnabledAt(1, true);
@@ -182,18 +185,28 @@ public class SSLClientGUI {
             }
         } catch (IOException e) {
             responseArea.append("Error al comunicarse con el servidor.\n");
+            JOptionPane.showMessageDialog(frame, "Error al comunicarse con el servidor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private void sendMessage() {
-        output.println("MENSAJE: " + messageField.getText());
+        String message = messageField.getText();
+        output.println("MENSAJE: " + message);
+        responseArea.append("Mensaje: " + message + "\n");
+    
+        // Mostrar confirmación en una ventana emergente
+        JOptionPane.showMessageDialog(frame, "Mensaje enviado: " + message, "Mensaje Enviado", JOptionPane.INFORMATION_MESSAGE);
     }
-
+    
     private void logout() {
         sessionActive = false;
         tabbedPane.setEnabledAt(1, false);
         tabbedPane.setSelectedIndex(0);
+    
+        // Mostrar mensaje de cierre de sesión en una ventana emergente
+        JOptionPane.showMessageDialog(frame, "Has cerrado sesión", "Sesión cerrada", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SSLClientGUI::new);
