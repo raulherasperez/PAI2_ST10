@@ -1,10 +1,11 @@
 package utils;
+
 import java.sql.*;
 
 public class ViewDatabase {
     public static void main(String[] args) {
         viewUsuarios();
-        viewTransacciones();
+        viewMensajesDiarios();
     }
 
     private static void viewUsuarios() {
@@ -22,26 +23,27 @@ public class ViewDatabase {
                 System.out.println("----------------------------");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al visualizar usuarios: " + e.getMessage());
         }
     }
 
-    private static void viewTransacciones() {
-        String url = "jdbc:sqlite:transacciones.db";
-        
+    private static void viewMensajesDiarios() {
+        String url = "jdbc:sqlite:usuarios.db";
+
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM transacciones")) {
-            
-            System.out.println("Transacciones:");
+             ResultSet rs = stmt.executeQuery("SELECT * FROM mensajes_diarios")) {
+
+            System.out.println("Mensajes Diarios:");
             while (rs.next()) {
                 System.out.println("ID: " + rs.getInt("id"));
-                System.out.println("Message: " + rs.getString("message"));
-                System.out.println("Nonce: " + rs.getString("nonce"));
+                System.out.println("Username: " + rs.getString("username"));
+                System.out.println("Fecha: " + rs.getString("fecha"));
+                System.out.println("Cantidad de Mensajes: " + rs.getInt("cantidad_mensajes"));
                 System.out.println("----------------------------");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al visualizar mensajes diarios: " + e.getMessage());
         }
     }
 }

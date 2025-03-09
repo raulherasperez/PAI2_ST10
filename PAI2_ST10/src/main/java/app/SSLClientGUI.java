@@ -3,8 +3,8 @@ package app;
 import javax.net.ssl.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.security.KeyStore;
 
@@ -16,7 +16,6 @@ public class SSLClientGUI {
     private SSLSocket socket;
     private PrintWriter output;
     private BufferedReader input;
-    private JTabbedPane tabbedPane;
     private boolean sessionActive = false;
 
     public SSLClientGUI() {
@@ -32,13 +31,12 @@ public class SSLClientGUI {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(trustStore);
 
-            SSLContext sslContext = SSLContext.getInstance("TLSv1.3"); // Asegura uso de TLS 1.3
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.3");
             sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
 
             SSLSocketFactory factory = sslContext.getSocketFactory();
             socket = (SSLSocket) factory.createSocket("localhost", 3343);
 
-            // Habilitar solo TLS 1.3 y sus cifrados compatibles
             socket.setEnabledProtocols(new String[]{"TLSv1.3"});
             socket.setEnabledCipherSuites(new String[]{
                     "TLS_AES_128_GCM_SHA256",
@@ -60,164 +58,69 @@ public class SSLClientGUI {
         frame.setSize(400, 300);
         frame.setLayout(new BorderLayout());
 
-        tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Login", createAuthPanel());
-        tabbedPane.addTab("Mensajería", createMessagePanel());
-        tabbedPane.setEnabledAt(1, false);
+        JPanel panel = new JPanel(new GridLayout(5, 1));
+        usernameField = new JTextField("Usuario");
+        passwordField = new JPasswordField("Contraseña");
+        JButton loginButton = new JButton("Iniciar Sesión");
+        JButton registerButton = new JButton("Registrar");
+        JButton sendMessageButton = new JButton("Enviar Mensaje");
+        messageField = new JTextField("Escribe tu mensaje");
+        responseArea = new JTextArea(5, 20);
+        responseArea.setEditable(false);
 
-        frame.add(tabbedPane, BorderLayout.CENTER);
-        frame.setVisible(true);
-    }
-
-    private JPanel createAuthPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        usernameField = createStyledTextField("Usuario");
-        passwordField = createStyledPasswordField("Contraseña");
-        JButton loginButton = createStyledButton("Iniciar Sesión", new Color(46, 204, 113));
-        JButton registerButton = createStyledButton("Registrar", new Color(52, 152, 219));
+        panel.add(usernameField);
+        panel.add(passwordField);
+        panel.add(loginButton);
+        panel.add(registerButton);
+        panel.add(messageField);
+        panel.add(sendMessageButton);
+        frame.add(panel, BorderLayout.CENTER);
+        frame.add(new JScrollPane(responseArea), BorderLayout.SOUTH);
 
         loginButton.addActionListener(e -> sendRequest("login"));
         registerButton.addActionListener(e -> sendRequest("register"));
-
-        gbc.gridy = 0;
-        panel.add(usernameField, gbc);
-        gbc.gridy = 1;
-        panel.add(passwordField, gbc);
-        gbc.gridy = 2;
-        panel.add(loginButton, gbc);
-        gbc.gridy = 3;
-        panel.add(registerButton, gbc);
-
-        return panel;
-    }
-
-    private JPanel createMessagePanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        messageField = createStyledTextField("Escribe tu mensaje");
-        JButton sendMessageButton = createStyledButton("Enviar", new Color(231, 76, 60));
-        JButton logoutButton = createStyledButton("Cerrar Sesión", new Color(192, 57, 43));
-
         sendMessageButton.addActionListener(e -> sendMessage());
-        logoutButton.addActionListener(e -> logout());
 
-        gbc.gridy = 0;
-        panel.add(messageField, gbc);
-        gbc.gridy = 1;
-        panel.add(sendMessageButton, gbc);
-        gbc.gridy = 2;
-        panel.add(logoutButton, gbc);
-
-        responseArea = new JTextArea(5, 20);
-        responseArea.setEditable(false);
-        gbc.gridy = 3;
-        panel.add(new JScrollPane(responseArea), gbc);
-
-        return panel;
-    }
-
-    private JTextField createStyledTextField(String placeholder) {
-        JTextField field = new JTextField(15);
-        field.setPreferredSize(new Dimension(200, 30));
-        setPlaceholder(field, placeholder);
-        return field;
-    }
-
-    private JPasswordField createStyledPasswordField(String placeholder) {
-        JPasswordField field = new JPasswordField(15);
-        field.setPreferredSize(new Dimension(200, 30));
-        setPlaceholder(field, placeholder);
-        return field;
-    }
-
-    private JButton createStyledButton(String text, Color color) {
-        JButton button = new JButton(text);
-        button.setBackground(color);
-        button.setForeground(Color.WHITE);
-        button.setPreferredSize(new Dimension(200, 40));
-        return button;
-    }
-
-    private void setPlaceholder(JTextField field, String placeholder) {
-        field.setText(placeholder);
-        field.setForeground(Color.GRAY);
-        field.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (field.getText().equals(placeholder)) {
-                    field.setText("");
-                    field.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (field.getText().isEmpty()) {
-                    field.setText(placeholder);
-                    field.setForeground(Color.GRAY);
-                }
-            }
-        });
+        frame.setVisible(true);
     }
 
     private void sendRequest(String action) {
         try {
             String userName = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
-    
+
             if (userName.isEmpty() || password.isEmpty()) {
                 responseArea.append("Ingrese usuario y contraseña.\n");
                 return;
             }
-    
+
             output.println(action);
             output.println(userName);
             output.println(password);
             output.flush();
-    
+
             String response = input.readLine();
             responseArea.append(response + "\n");
 
             JOptionPane.showMessageDialog(frame, response, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
-
             if ("Login Successful".equals(response)) {
                 sessionActive = true;
-                tabbedPane.setEnabledAt(1, true);
-                tabbedPane.setSelectedIndex(1);
             }
         } catch (IOException e) {
             responseArea.append("Error al comunicarse con el servidor.\n");
             JOptionPane.showMessageDialog(frame, "Error al comunicarse con el servidor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void sendMessage() {
+        if (!sessionActive) {
+            JOptionPane.showMessageDialog(frame, "Debe iniciar sesión antes de enviar un mensaje.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String message = messageField.getText();
         output.println("MENSAJE: " + message);
-        responseArea.append("Mensaje: " + message + "\n");
-    
-        // Mostrar confirmación en una ventana emergente
-        JOptionPane.showMessageDialog(frame, "Mensaje enviado: " + message, "Mensaje Enviado", JOptionPane.INFORMATION_MESSAGE);
+        responseArea.append("Mensaje enviado: " + message + "\n");
     }
-    
-    private void logout() {
-        sessionActive = false;
-        tabbedPane.setEnabledAt(1, false);
-        tabbedPane.setSelectedIndex(0);
-    
-        // Mostrar mensaje de cierre de sesión en una ventana emergente
-        JOptionPane.showMessageDialog(frame, "Has cerrado sesión", "Sesión cerrada", JOptionPane.INFORMATION_MESSAGE);
-    }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SSLClientGUI::new);
