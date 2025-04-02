@@ -1,3 +1,15 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Ejecutar cuando hagas push en la rama "main"
+  pull_request:
+    branches:
+      - main  # Ejecutar cuando se cree/modifique un PR en "main"
+  workflow_dispatch:  # Permite ejecutar manualmente el workflow desde GitHub Actions
+
+  
   sca:
     runs-on: ubuntu-latest
     steps:
