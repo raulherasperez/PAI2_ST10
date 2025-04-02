@@ -3,11 +3,11 @@ name: DevSecOps Pipeline
 on:
   push:
     branches:
-      - main  # Ejecutar cuando hagas push en la rama "main"
+      - main
   pull_request:
     branches:
-      - main  # Ejecutar cuando se cree/modifique un PR en "main"
-  workflow_dispatch:  # Permite ejecutar manualmente el workflow desde GitHub Actions
+      - main
+  workflow_dispatch:
 
 jobs:
   sca:
@@ -22,11 +22,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Instalar Maven
+        run: sudo apt-get install -y maven
+
       - name: Ejecutar Dependency-Check
         run: |
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
-          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan .
+          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly
 
   sast:
     runs-on: ubuntu-latest
@@ -34,8 +37,14 @@ jobs:
       - name: Clonar repositorio
         uses: actions/checkout@v3
 
-      - name: Instalar Maven
-        run: sudo apt-get install maven -y
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Ejecutar SpotBugs
+      - name: Instalar Maven
+        run: sudo apt-get install -y maven
+
+      - name: Ejecutar análisis con SpotBugs
         run: mvn spotbugs:check
