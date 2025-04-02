@@ -1,0 +1,28 @@
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Ejecutar Dependency-Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
+          unzip dependency-check-8.4.0-release.zip
+          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan .
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Maven
+        run: sudo apt-get install maven -y
+
+      - name: Ejecutar SpotBugs
+        run: mvn spotbugs:check
