@@ -50,7 +50,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.3.0</version>
+                <version>4.4.2</version> <!-- Versión estable recomendada -->
                 <executions>
                     <execution>
                         <goals>
@@ -75,4 +75,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <!-- Repositorio central para resolver dependencias -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
 </project>
