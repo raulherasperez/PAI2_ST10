@@ -47,4 +47,4 @@ jobs:
         run: sudo apt-get install -y maven
 
       - name: Ejecutar análisis con SpotBugs
-        run: cd .\PAI2_ST10\  && mvn spotbugs:check
+        run:  mvn spotbugs:check
