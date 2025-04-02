@@ -9,7 +9,7 @@ on:
       - main  # Ejecutar cuando se cree/modifique un PR en "main"
   workflow_dispatch:  # Permite ejecutar manualmente el workflow desde GitHub Actions
 
-  
+jobs:
   sca:
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +27,7 @@ on:
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan .
+
   sast:
     runs-on: ubuntu-latest
     steps:
