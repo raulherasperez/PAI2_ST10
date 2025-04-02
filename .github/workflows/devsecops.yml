@@ -47,4 +47,4 @@ jobs:
         run: sudo apt-get install -y maven
 
       - name: Ejecutar análisis con SpotBugs
-        run:  mvn spotbugs:check
+        run:  mvn clean install spotbugs:check
