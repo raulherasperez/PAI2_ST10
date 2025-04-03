@@ -48,3 +48,36 @@ jobs:
 
       - name: Ejecutar análisis con SpotBugs
         run:  cd PAI2_ST10 && mvn clean install spotbugs:check
+
+  dast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar dependencias
+        run: |
+          # Instalar dependencias
+          mvn install -DskipTests
+
+      - name: Ejecutar el servidor SSL en segundo plano
+        run: |
+          # Ejecutar el servidor en segundo plano (con SSL)
+          nohup java FileSSLServerSocket > server.log 2>&1 &
+
+      - name: Esperar a que el servidor se inicie
+        run: |
+          # Espera a que el servidor esté disponible
+          echo "Esperando a que el servidor inicie..."
+          sleep 30
+
+      - name: Ejecutar OWASP ZAP DAST
+        run: |
+          # Ejecutar las pruebas DAST con ZAP sobre HTTPS (con SSL)
+          docker run --rm -t owasp/zap2docker-stable zap-full-scan.py -t https://localhost:3343
