@@ -67,7 +67,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           # Instalar dependencias
-          cd PAI2_ST10 && mvn install -DskipTests
+          cd PAI2_ST10 && mvn clean install  -DskipTests
 
       - name: Ejecutar el servidor SSL en segundo plano
         run: |
