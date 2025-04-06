@@ -83,4 +83,4 @@ jobs:
       - name: Ejecutar OWASP ZAP DAST
         run: |
           # Ejecutar las pruebas DAST con ZAP sobre HTTPS (con SSL)
-          docker run --rm -t ghcr.io/ictu/zap2docker zap-full-scan.py -t https://localhost:3343
+          docker run --rm -t ictu/zap2docker zap-full-scan.py -t https://localhost:3343
