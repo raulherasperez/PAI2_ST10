@@ -86,3 +86,44 @@ jobs:
            docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
           -t https://host.docker.internal:3343 \
           -r zap-report.html
+  
+  iast:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Clonar repositorio
+          uses: actions/checkout@v3
+        
+        - name: Configurar Java
+          uses: actions/setup-java@v3
+          with:
+              distribution: 'temurin'
+              java-version: '17'
+        
+        - name: Instalar Maven
+          run: sudo apt-get install -y maven
+        
+        - name: Instalar dependencias
+          run: |
+                # Instalar dependencias
+                cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
+        
+        - name: Instalar Semgrep
+          run: |
+                pip install semgrep
+        
+        - name: Ejecutar la aplicación con Semgrep IAST
+          run: |
+                # Ejecutar la aplicación en segundo plano (si no está corriendo aún)
+                nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
+        
+                # Esperar un momento para asegurarnos que la aplicación está corriendo
+                echo "Esperando a que la aplicación inicie..."
+                sleep 30
+        
+                # Ejecutar Semgrep IAST sobre la aplicación corriendo
+                semgrep --config=auto --exclude-dir=target --exclude-dir=.git .
+        
+        - name: Detener el servidor
+          run: |
+                # Detener el servidor si es necesario
+                pkill -f "java -jar target/mi-aplicacion.jar"
