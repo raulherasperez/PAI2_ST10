@@ -121,8 +121,8 @@ jobs:
                 sleep 30
         
                 # Ejecutar Semgrep IAST sobre la aplicación corriendo
-                semgrep --config=auto --exclude-dir=target --exclude-dir=.git .
-        
+                semgrep --config=auto --exclude target --exclude .git .
+
         - name: Detener el servidor
           run: |
                 # Detener el servidor si es necesario
