@@ -122,8 +122,3 @@ jobs:
         
                 # Ejecutar Semgrep IAST sobre la aplicación corriendo
                 semgrep --config=auto --exclude target --exclude .git .
-
-        - name: Detener el servidor
-          run: |
-                # Detener el servidor si es necesario
-                pkill -f "java -jar target/mi-aplicacion.jar"
