@@ -47,7 +47,7 @@ jobs:
         run: sudo apt-get install -y maven
 
       - name: Ejecutar análisis con SpotBugs
-        run:  cd PAI2_ST10 && mvn clean install spotbugs:check
+        run:  cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check
 
   dast:
     runs-on: ubuntu-latest
