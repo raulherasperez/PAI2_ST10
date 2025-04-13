@@ -52,8 +52,8 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.3.0</version>
                 <configuration>
-                    <failOnError>false</failOnError> <!-- 👈 Esto evita que falle el build -->
-                    <xmlOutput>true</xmlOutput>      <!-- Opcional, útil para generar informes -->
+                    <failOnError>false</failOnError> 
+                    <xmlOutput>true</xmlOutput>      
                 </configuration>
                 <executions>
                     <execution>
