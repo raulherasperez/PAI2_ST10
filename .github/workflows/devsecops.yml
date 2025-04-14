@@ -22,7 +22,7 @@ jobs:
 
       - name: Ejecutar Trivy para IaC
         run: |
-          trivy config . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
+          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
           
   sca:
     runs-on: ubuntu-latest
