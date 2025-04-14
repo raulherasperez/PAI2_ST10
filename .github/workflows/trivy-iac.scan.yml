@@ -21,4 +21,5 @@ jobs:
 
       - name: Run Trivy on IaC files
         run: |
-          trivy config . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --no-progress
+          trivy config . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
+
