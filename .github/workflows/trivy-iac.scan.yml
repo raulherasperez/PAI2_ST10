@@ -1,0 +1,24 @@
+name: Trivy IaC Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  trivy-iac-scan:
+    name: Scan IaC with Trivy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Run Trivy on IaC files
+        run: |
+          trivy config . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --no-progress
