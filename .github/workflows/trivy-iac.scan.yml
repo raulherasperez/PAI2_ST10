@@ -1,4 +1,4 @@
-name: Trivy IaC Scan
+name: Trivy Maven Dependency Scan
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  trivy-iac-scan:
-    name: Scan IaC with Trivy
+  trivy-maven-scan:
+    name: Scan Maven dependencies with Trivy
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,6 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Run Trivy on IaC files
+      - name: Run Trivy filesystem scan (will detect pom.xml)
         run: |
-          trivy config . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
-
+          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
