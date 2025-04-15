@@ -20,10 +20,18 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Ejecutar Trivy para IaC
+      - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
-          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL
-          
+          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
+
+      - name: Enviar informe de Trivy a DefectDojo
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+               -F "file=@trivy-iac-report.json" \
+               -F "scan_type=Trivy" \
+               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+
   sca:
     runs-on: ubuntu-latest
     steps:
@@ -39,11 +47,19 @@ jobs:
       - name: Instalar Maven
         run: sudo apt-get install -y maven
 
-      - name: Ejecutar Dependency-Check
+      - name: Ejecutar Dependency-Check (Generar informe JSON)
         run: |
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
-          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly
+          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
+
+      - name: Enviar informe de Dependency-Check a DefectDojo
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+               -F "file=@dependency-check-report.json" \
+               -F "scan_type=Dependency-Check" \
+               http://<DEFECTDOJO_URL>/api/v2/import-scan/
 
   sast:
     runs-on: ubuntu-latest
@@ -60,8 +76,17 @@ jobs:
       - name: Instalar Maven
         run: sudo apt-get install -y maven
 
-      - name: Ejecutar análisis con SpotBugs
-        run:  cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check
+      - name: Ejecutar análisis con SpotBugs (Generar informe XML)
+        run: |
+          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check spotbugs:gui -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
+
+      - name: Enviar informe de SpotBugs a DefectDojo
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+               -F "file=@PAI2_ST10/spotbugs-report.xml" \
+               -F "scan_type=SpotBugs" \
+               http://<DEFECTDOJO_URL>/api/v2/import-scan/
 
   dast:
     runs-on: ubuntu-latest
@@ -80,60 +105,66 @@ jobs:
 
       - name: Instalar dependencias
         run: |
-          # Instalar dependencias
-          cd PAI2_ST10 && mvn clean install  -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
+          cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
 
       - name: Ejecutar el servidor SSL en segundo plano
         run: |
-          # Ejecutar el servidor en segundo plano (con SSL)
           nohup java FileSSLServerSocket > server.log 2>&1 &
 
       - name: Esperar a que el servidor se inicie
         run: |
-          # Espera a que el servidor esté disponible
           echo "Esperando a que el servidor inicie..."
           sleep 30
 
-      - name: Ejecutar OWASP ZAP DAST
+      - name: Ejecutar OWASP ZAP DAST (Generar informes HTML y JSON)
         run: |
-          # Ejecutar las pruebas DAST con ZAP sobre HTTPS (con SSL)
-           docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
-          -t https://host.docker.internal:3343 \
-          -r zap-report.html
-  
+          docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
+            -t https://host.docker.internal:3343 \
+            -J zap-report.json \
+            -r zap-report.html
+
+      - name: Enviar informe de OWASP ZAP a DefectDojo
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+               -F "file=@zap-report.json" \
+               -F "scan_type=ZAP" \
+               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+
   iast:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Clonar repositorio
-          uses: actions/checkout@v3
-        
-        - name: Configurar Java
-          uses: actions/setup-java@v3
-          with:
-              distribution: 'temurin'
-              java-version: '17'
-        
-        - name: Instalar Maven
-          run: sudo apt-get install -y maven
-        
-        - name: Instalar dependencias
-          run: |
-                # Instalar dependencias
-                cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
-        
-        - name: Instalar Semgrep
-          run: |
-                pip install semgrep
-        
-        - name: Ejecutar la aplicación con Semgrep IAST
-          run: |
-                # Ejecutar la aplicación en segundo plano (si no está corriendo aún)
-                nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
-        
-                # Esperar un momento para asegurarnos que la aplicación está corriendo
-                echo "Esperando a que la aplicación inicie..."
-                sleep 30
-        
-                # Ejecutar Semgrep IAST sobre la aplicación corriendo
-                semgrep --config=auto --exclude target --exclude .git .
-        
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar Maven
+        run: sudo apt-get install -y maven
+
+      - name: Instalar dependencias
+        run: |
+          cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
+
+      - name: Instalar Semgrep
+        run: |
+          pip install semgrep
+
+      - name: Ejecutar la aplicación con Semgrep IAST (Generar informe SARIF)
+        run: |
+          nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
+          echo "Esperando a que la aplicación inicie..."
+          sleep 30
+          semgrep --config=auto --exclude target --exclude .git . --json > semgrep-report.sarif
+
+      - name: Enviar informe de Semgrep a DefectDojo
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+               -F "file=@semgrep-report.sarif" \
+               -F "scan_type=Semgrep" \
+               http://<DEFECTDOJO_URL>/api/v2/import-scan/
