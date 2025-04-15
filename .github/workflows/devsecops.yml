@@ -24,6 +24,11 @@ jobs:
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
 
+      - name: Verificar archivo generado por Trivy
+        run: |
+          echo "Archivos generados por Trivy:"
+          ls -l trivy-iac-report.json
+
       - name: Enviar informe de Trivy a DefectDojo
         run: |
           curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
@@ -53,6 +58,11 @@ jobs:
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
 
+      - name: Verificar archivo generado por Dependency-Check
+        run: |
+          echo "Archivos generados por Dependency-Check:"
+          ls -l dependency-check-report.json
+
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
           curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
@@ -80,11 +90,16 @@ jobs:
         run: |
           cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
 
+      - name: Verificar archivo generado por SpotBugs
+        run: |
+          echo "Archivos generados por SpotBugs:"
+          ls -l PAI2_ST10/spotbugs-report.xml
+
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
           curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@PAI2_ST10/target/spotbugs-report.xml" \
+               -F "file=@PAI2_ST10/spotbugs-report.xml" \
                -F "scan_type=SpotBugs" \
                ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
@@ -123,6 +138,11 @@ jobs:
             -J zap-report.json \
             -r zap-report.html
 
+      - name: Verificar archivos generados por OWASP ZAP
+        run: |
+          echo "Archivos generados por OWASP ZAP:"
+          ls -l zap-report.json zap-report.html
+
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
           curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
@@ -160,6 +180,11 @@ jobs:
           echo "Esperando a que la aplicación inicie..."
           sleep 30
           semgrep --config=auto --exclude target --exclude .git . --json > semgrep-report.sarif
+
+      - name: Verificar archivo generado por Semgrep
+        run: |
+          echo "Archivos generados por Semgrep:"
+          ls -l semgrep-report.sarif
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
