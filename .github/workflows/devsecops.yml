@@ -30,7 +30,7 @@ jobs:
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
                -F "file=@trivy-iac-report.json" \
                -F "scan_type=Trivy" \
-               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
   sca:
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
                -F "file=@dependency-check-report.json" \
                -F "scan_type=Dependency-Check" \
-               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
   sast:
     runs-on: ubuntu-latest
@@ -86,7 +86,7 @@ jobs:
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
                -F "file=@PAI2_ST10/spotbugs-report.xml" \
                -F "scan_type=SpotBugs" \
-               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
   dast:
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
                -F "file=@zap-report.json" \
                -F "scan_type=ZAP" \
-               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
   iast:
     runs-on: ubuntu-latest
@@ -167,4 +167,4 @@ jobs:
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
                -F "file=@semgrep-report.sarif" \
                -F "scan_type=Semgrep" \
-               http://<DEFECTDOJO_URL>/api/v2/import-scan/
+               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
