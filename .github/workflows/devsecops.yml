@@ -23,6 +23,8 @@ jobs:
       - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
+          echo "==> Archivos tras Trivy:"
+          ls -la
 
       - name: Enviar informe de Trivy a DefectDojo
         run: |
@@ -57,6 +59,8 @@ jobs:
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
+          echo "==> Archivos tras Dependency-Check:"
+          ls -la
 
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
@@ -89,6 +93,8 @@ jobs:
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
           cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
+          echo "==> Archivos tras SpotBugs:"
+          ls -la PAI2_ST10
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
@@ -128,6 +134,8 @@ jobs:
             -t https://host.docker.internal:3343 \
             -J zap-report.json \
             -r zap-report.html
+          echo "==> Archivos tras OWASP ZAP:"
+          ls -la
 
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
@@ -170,6 +178,8 @@ jobs:
           echo "Esperando a que la aplicación inicie..."
           sleep 30
           semgrep --config=auto --exclude target --exclude .git . --json > semgrep-report.sarif
+          echo "==> Archivos tras Semgrep:"
+          ls -la
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
