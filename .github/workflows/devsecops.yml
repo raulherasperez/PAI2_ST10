@@ -24,18 +24,19 @@ jobs:
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
 
-      - name: Verificar archivo generado por Trivy
-        run: |
-          echo "Archivos generados por Trivy:"
-          ls -l trivy-iac-report.json
-
       - name: Enviar informe de Trivy a DefectDojo
         run: |
-          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@trivy-iac-report.json" \
-               -F "scan_type=Trivy" \
-               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          curl -s -w "%{http_code}" -o curl_output.txt -X POST \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "file=@trivy-iac-report.json" \
+            -F "scan_type=Trivy Vulnerability Scan" \
+            -F "active=true" -F "verified=false" \
+            -F "minimum_severity=Low" \
+            -F "scan_date=$(date +%Y-%m-%d)" \
+            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          echo "Respuesta HTTP:"
+          cat curl_output.txt
 
   sca:
     runs-on: ubuntu-latest
@@ -58,18 +59,19 @@ jobs:
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
 
-      - name: Verificar archivo generado por Dependency-Check
-        run: |
-          echo "Archivos generados por Dependency-Check:"
-          ls -l dependency-check-report.json
-
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
-          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@dependency-check-report.json" \
-               -F "scan_type=Dependency-Check" \
-               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          curl -s -w "%{http_code}" -o curl_output.txt -X POST \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "file=@dependency-check-report.json" \
+            -F "scan_type=Dependency Check" \
+            -F "active=true" -F "verified=false" \
+            -F "minimum_severity=Low" \
+            -F "scan_date=$(date +%Y-%m-%d)" \
+            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          echo "Respuesta HTTP:"
+          cat curl_output.txt
 
   sast:
     runs-on: ubuntu-latest
@@ -90,18 +92,19 @@ jobs:
         run: |
           cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
 
-      - name: Verificar archivo generado por SpotBugs
-        run: |
-          echo "Archivos generados por SpotBugs:"
-          ls -l PAI2_ST10/spotbugs-report.xml
-
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
-          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@PAI2_ST10/spotbugs-report.xml" \
-               -F "scan_type=SpotBugs" \
-               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          curl -s -w "%{http_code}" -o curl_output.txt -X POST \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "file=@PAI2_ST10/spotbugs-report.xml" \
+            -F "scan_type=SpotBugs Scan" \
+            -F "active=true" -F "verified=false" \
+            -F "minimum_severity=Low" \
+            -F "scan_date=$(date +%Y-%m-%d)" \
+            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          echo "Respuesta HTTP:"
+          cat curl_output.txt
 
   dast:
     runs-on: ubuntu-latest
@@ -128,7 +131,6 @@ jobs:
 
       - name: Esperar a que el servidor se inicie
         run: |
-          echo "Esperando a que el servidor inicie..."
           sleep 30
 
       - name: Ejecutar OWASP ZAP DAST (Generar informes HTML y JSON)
@@ -138,18 +140,19 @@ jobs:
             -J zap-report.json \
             -r zap-report.html
 
-      - name: Verificar archivos generados por OWASP ZAP
-        run: |
-          echo "Archivos generados por OWASP ZAP:"
-          ls -l zap-report.json zap-report.html
-
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
-          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@zap-report.json" \
-               -F "scan_type=ZAP" \
-               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          curl -s -w "%{http_code}" -o curl_output.txt -X POST \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "file=@zap-report.json" \
+            -F "scan_type=ZAP Scan" \
+            -F "active=true" -F "verified=false" \
+            -F "minimum_severity=Low" \
+            -F "scan_date=$(date +%Y-%m-%d)" \
+            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          echo "Respuesta HTTP:"
+          cat curl_output.txt
 
   iast:
     runs-on: ubuntu-latest
@@ -177,19 +180,19 @@ jobs:
       - name: Ejecutar la aplicación con Semgrep IAST (Generar informe SARIF)
         run: |
           nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
-          echo "Esperando a que la aplicación inicie..."
           sleep 30
           semgrep --config=auto --exclude target --exclude .git . --json > semgrep-report.sarif
 
-      - name: Verificar archivo generado por Semgrep
-        run: |
-          echo "Archivos generados por Semgrep:"
-          ls -l semgrep-report.sarif
-
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
-          curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-               -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@semgrep-report.sarif" \
-               -F "scan_type=Semgrep" \
-               ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          curl -s -w "%{http_code}" -o curl_output.txt -X POST \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "file=@semgrep-report.sarif" \
+            -F "scan_type=Semgrep JSON Report" \
+            -F "active=true" -F "verified=false" \
+            -F "minimum_severity=Low" \
+            -F "scan_date=$(date +%Y-%m-%d)" \
+            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
+          echo "Respuesta HTTP:"
+          cat curl_output.txt
