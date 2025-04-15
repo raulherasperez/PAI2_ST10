@@ -28,15 +28,14 @@ jobs:
         run: |
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "file=@trivy-iac-report.json" \
-            -F "scan_type=Trivy Vulnerability Scan" \
-            -F "active=true" -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -F "scan_date=$(date +%Y-%m-%d)" \
-            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
-          echo "Respuesta HTTP:"
-          cat curl_output.txt
+            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            --form "scan_type=Trivy Vulnerability Scan" \
+            --form "file=@trivy-iac-report.json;type=application/json" \
+            --form "scan_date=$(date +%F)" \
+            --form "active=true" \
+            --form "verified=false" \
+            --form "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sca:
     runs-on: ubuntu-latest
@@ -63,15 +62,14 @@ jobs:
         run: |
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "file=@dependency-check-report.json" \
-            -F "scan_type=Dependency Check" \
-            -F "active=true" -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -F "scan_date=$(date +%Y-%m-%d)" \
-            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
-          echo "Respuesta HTTP:"
-          cat curl_output.txt
+            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            --form "scan_type=Dependency Check" \
+            --form "file=@dependency-check-report.json;type=application/json" \
+            --form "scan_date=$(date +%F)" \
+            --form "active=true" \
+            --form "verified=false" \
+            --form "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sast:
     runs-on: ubuntu-latest
@@ -96,15 +94,14 @@ jobs:
         run: |
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "file=@PAI2_ST10/spotbugs-report.xml" \
-            -F "scan_type=SpotBugs Scan" \
-            -F "active=true" -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -F "scan_date=$(date +%Y-%m-%d)" \
-            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
-          echo "Respuesta HTTP:"
-          cat curl_output.txt
+            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            --form "scan_type=SpotBugs Scan" \
+            --form "file=@PAI2_ST10/spotbugs-report.xml;type=application/xml" \
+            --form "scan_date=$(date +%F)" \
+            --form "active=true" \
+            --form "verified=false" \
+            --form "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   dast:
     runs-on: ubuntu-latest
@@ -125,14 +122,6 @@ jobs:
         run: |
           cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
 
-      - name: Ejecutar el servidor SSL en segundo plano
-        run: |
-          nohup java FileSSLServerSocket > server.log 2>&1 &
-
-      - name: Esperar a que el servidor se inicie
-        run: |
-          sleep 30
-
       - name: Ejecutar OWASP ZAP DAST (Generar informes HTML y JSON)
         run: |
           docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
@@ -144,15 +133,14 @@ jobs:
         run: |
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "file=@zap-report.json" \
-            -F "scan_type=ZAP Scan" \
-            -F "active=true" -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -F "scan_date=$(date +%Y-%m-%d)" \
-            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
-          echo "Respuesta HTTP:"
-          cat curl_output.txt
+            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            --form "scan_type=ZAP Scan" \
+            --form "file=@zap-report.json;type=application/json" \
+            --form "scan_date=$(date +%F)" \
+            --form "active=true" \
+            --form "verified=false" \
+            --form "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   iast:
     runs-on: ubuntu-latest
@@ -174,12 +162,12 @@ jobs:
           cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
 
       - name: Instalar Semgrep
-        run: |
-          pip install semgrep
+        run: pip install semgrep
 
       - name: Ejecutar la aplicación con Semgrep IAST (Generar informe SARIF)
         run: |
           nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
+          echo "Esperando a que la aplicación inicie..."
           sleep 30
           semgrep --config=auto --exclude target --exclude .git . --json > semgrep-report.sarif
 
@@ -187,12 +175,11 @@ jobs:
         run: |
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "file=@semgrep-report.sarif" \
-            -F "scan_type=Semgrep JSON Report" \
-            -F "active=true" -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -F "scan_date=$(date +%Y-%m-%d)" \
-            ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
-          echo "Respuesta HTTP:"
-          cat curl_output.txt
+            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            --form "scan_type=Semgrep JSON Report" \
+            --form "file=@semgrep-report.sarif;type=application/json" \
+            --form "scan_date=$(date +%F)" \
+            --form "active=true" \
+            --form "verified=false" \
+            --form "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
