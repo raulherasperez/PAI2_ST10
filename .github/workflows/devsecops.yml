@@ -78,7 +78,7 @@ jobs:
 
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
-          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check spotbugs:gui -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
+          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
