@@ -84,7 +84,7 @@ jobs:
         run: |
           curl -X POST -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
                -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-               -F "file=@PAI2_ST10/spotbugs-report.xml" \
+               -F "file=@PAI2_ST10/target/spotbugs-report.xml" \
                -F "scan_type=SpotBugs" \
                ${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/
 
