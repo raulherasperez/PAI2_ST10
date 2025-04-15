@@ -29,7 +29,7 @@ jobs:
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Trivy Vulnerability Scan" \
+            --form "scan_type=Trivy Scan" \
             --form "file=@trivy-iac-report.json;type=application/json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
@@ -63,7 +63,7 @@ jobs:
           curl -s -w "%{http_code}" -o curl_output.txt -X POST \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Dependency Check" \
+            --form "scan_type=Dependency Check Scan" \
             --form "file=@dependency-check-report.json;type=application/json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
