@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="4.7.3" sequence="0" timestamp="1745225880268" analysisTimestamp="1745226936586" release="">
+  <Project projectName="servidor-sqlite">
+    <Jar>C:\Users\raulh\OneDrive\Escritorio\PAI2_ST10\PAI2_ST10\target\classes</Jar>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\xerial\sqlite-jdbc\3.42.0.0\sqlite-jdbc-3.42.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\com\github\spotbugs\spotbugs\4.7.3\spotbugs-4.7.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\ow2\asm\asm\9.4\asm-9.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\ow2\asm\asm-analysis\9.4\asm-analysis-9.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\ow2\asm\asm-commons\9.4\asm-commons-9.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\ow2\asm\asm-tree\9.4\asm-tree-9.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\ow2\asm\asm-util\9.4\asm-util-9.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\apache\bcel\bcel\6.5.0\bcel-6.5.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\net\jcip\jcip-annotations\1.0\jcip-annotations-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\dom4j\dom4j\2.1.3\dom4j-2.1.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\apache\commons\commons-lang3\3.12.0\commons-lang3-3.12.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\apache\commons\commons-text\1.10.0\commons-text-1.10.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\org\slf4j\slf4j-api\2.0.0\slf4j-api-2.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\com\github\spotbugs\spotbugs-annotations\4.7.3\spotbugs-annotations-4.7.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\raulh\.m2\repository\com\google\code\gson\gson\2.9.1\gson-2.9.1.jar</AuxClasspathEntry>
+  </Project>
+  <BugInstance type="DMI_RANDOM_USED_ONLY_ONCE" priority="1" rank="14" abbrev="DMI" category="BAD_PRACTICE" instanceHash="3733d6969ec006d49fadf994a4564ec0" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="440">
+    <ShortMessage>Random object created and used only once</ShortMessage>
+    <LongMessage>Random object created and used only once in app.FileSSLServerSocket.generateSalt()</LongMessage>
+    <Class classname="app.FileSSLServerSocket" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="12" end="389" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 12-389]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket" name="generateSalt" signature="()Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="289" end="292" startBytecode="0" endBytecode="86" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method app.FileSSLServerSocket.generateSalt()</Message>
+    </Method>
+    <Method classname="java.security.SecureRandom" name="nextBytes" signature="([B)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.security.SecureRandom" start="757" end="764" startBytecode="0" endBytecode="159" sourcefile="SecureRandom.java" sourcepath="java/security/SecureRandom.java"/>
+      <Message>Called method java.security.SecureRandom.nextBytes(byte[])</Message>
+    </Method>
+    <SourceLine classname="app.FileSSLServerSocket" primary="true" start="291" end="291" startBytecode="15" endBytecode="15" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+      <Message>At FileSSLServerSocket.java:[line 291]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="a289e569e69cf6cc4cea2e3fb0f30421" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.FileSSLServerSocket.hashPassword(String, String): String.getBytes()</LongMessage>
+    <Class classname="app.FileSSLServerSocket" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="12" end="389" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 12-389]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket" name="hashPassword" signature="(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="297" end="308" startBytecode="0" endBytecode="254" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method app.FileSSLServerSocket.hashPassword(String, String)</Message>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="1799" end="1799" startBytecode="0" endBytecode="56" sourcefile="String.java" sourcepath="java/lang/String.java"/>
+      <Message>Called method String.getBytes()</Message>
+    </Method>
+    <SourceLine classname="app.FileSSLServerSocket" primary="true" start="299" end="299" startBytecode="17" endBytecode="17" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+      <Message>At FileSSLServerSocket.java:[line 299]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="OBL_UNSATISFIED_OBLIGATION" priority="2" rank="20" abbrev="OBL" category="EXPERIMENTAL" instanceHash="8061facb34323ac98c410a742df7a8bc" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to clean up stream or resource</ShortMessage>
+    <LongMessage>app.FileSSLServerSocket.incrementMessageCount(String) may fail to clean up java.sql.ResultSet</LongMessage>
+    <Class classname="app.FileSSLServerSocket" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="12" end="389" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 12-389]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket" name="incrementMessageCount" signature="(Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="336" end="389" startBytecode="0" endBytecode="1293" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method app.FileSSLServerSocket.incrementMessageCount(String)</Message>
+    </Method>
+    <Class classname="java.sql.ResultSet" role="CLASS_REFTYPE">
+      <SourceLine classname="java.sql.ResultSet" start="4186" end="4287" sourcefile="ResultSet.java" sourcepath="java/sql/ResultSet.java">
+        <Message>At ResultSet.java:[lines 4186-4287]</Message>
+      </SourceLine>
+      <Message>Reference type java.sql.ResultSet</Message>
+    </Class>
+    <Int value="1" role="INT_OBLIGATIONS_REMAINING">
+      <Message>1 instances of obligation remaining</Message>
+    </Int>
+    <SourceLine classname="app.FileSSLServerSocket" primary="true" start="342" end="342" startBytecode="38" endBytecode="38" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 342] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="343" end="343" startBytecode="45" endBytecode="45" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 343]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="348" end="348" startBytecode="74" endBytecode="74" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 348]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="349" end="349" startBytecode="79" endBytecode="79" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 349]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="350" end="350" startBytecode="95" endBytecode="95" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 350]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="351" end="351" startBytecode="104" endBytecode="104" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 351]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="351" end="351" startBytecode="106" endBytecode="106" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 351] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="353" end="353" startBytecode="113" endBytecode="113" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 353]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="367" end="367" startBytecode="276" endBytecode="276" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 367]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="368" end="368" startBytecode="285" endBytecode="285" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 368]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="369" end="369" startBytecode="290" endBytecode="290" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 369]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="370" end="370" startBytecode="306" endBytecode="306" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 370]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="371" end="371" startBytecode="315" endBytecode="315" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 371]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="372" end="372" startBytecode="324" endBytecode="324" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 372]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="373" end="373" startBytecode="337" endBytecode="337" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 373]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="375" end="375" startBytecode="400" endBytecode="400" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 375]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="378" end="378" startBytecode="463" endBytecode="463" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 378]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="378" end="378" startBytecode="472" endBytecode="472" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 378] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="379" end="379" startBytecode="479" endBytecode="479" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 379]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="380" end="380" startBytecode="488" endBytecode="488" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 380]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="386" end="386" startBytecode="542" endBytecode="542" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 386]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="389" end="389" startBytecode="595" endBytecode="595" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 389]</Message>
+    </SourceLine>
+    <String value="{Statement x 2,ResultSet x 1}" role="STRING_REMAINING_OBLIGATIONS">
+      <Message>Remaining obligations: {Statement x 2,ResultSet x 1}</Message>
+    </String>
+  </BugInstance>
+  <BugInstance type="OBL_UNSATISFIED_OBLIGATION" priority="2" rank="20" abbrev="OBL" category="EXPERIMENTAL" instanceHash="7d98764391c07bd132e0e20b32c68a55" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to clean up stream or resource</ShortMessage>
+    <LongMessage>app.FileSSLServerSocket.incrementMessageCount(String) may fail to clean up java.sql.Statement</LongMessage>
+    <Class classname="app.FileSSLServerSocket" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="12" end="389" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 12-389]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket" name="incrementMessageCount" signature="(Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="336" end="389" startBytecode="0" endBytecode="1293" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method app.FileSSLServerSocket.incrementMessageCount(String)</Message>
+    </Method>
+    <Class classname="java.sql.Statement" role="CLASS_REFTYPE">
+      <SourceLine classname="java.sql.Statement" start="1096" end="1647" sourcefile="Statement.java" sourcepath="java/sql/Statement.java">
+        <Message>At Statement.java:[lines 1096-1647]</Message>
+      </SourceLine>
+      <Message>Reference type java.sql.Statement</Message>
+    </Class>
+    <Int value="2" role="INT_OBLIGATIONS_REMAINING">
+      <Message>2 instances of obligation remaining</Message>
+    </Int>
+    <SourceLine classname="app.FileSSLServerSocket" primary="true" start="342" end="342" startBytecode="30" endBytecode="30" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 342] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="343" end="343" startBytecode="45" endBytecode="45" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 343]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="348" end="348" startBytecode="74" endBytecode="74" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 348]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="349" end="349" startBytecode="79" endBytecode="79" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 349]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="349" end="349" startBytecode="88" endBytecode="88" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 349] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="350" end="350" startBytecode="95" endBytecode="95" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 350]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="351" end="351" startBytecode="104" endBytecode="104" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 351]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="353" end="353" startBytecode="113" endBytecode="113" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 353]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="367" end="367" startBytecode="276" endBytecode="276" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 367]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="368" end="368" startBytecode="285" endBytecode="285" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 368]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="369" end="369" startBytecode="290" endBytecode="290" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 369]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="369" end="369" startBytecode="299" endBytecode="299" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 369] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="370" end="370" startBytecode="306" endBytecode="306" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 370]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="371" end="371" startBytecode="315" endBytecode="315" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 371]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="372" end="372" startBytecode="324" endBytecode="324" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 372]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="373" end="373" startBytecode="337" endBytecode="337" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 373]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="375" end="375" startBytecode="400" endBytecode="400" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 375]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="378" end="378" startBytecode="463" endBytecode="463" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 378]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="378" end="378" startBytecode="464" endBytecode="464" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at FileSSLServerSocket.java:[line 378] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="379" end="379" startBytecode="479" endBytecode="479" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 379]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="380" end="380" startBytecode="488" endBytecode="488" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 380]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="386" end="386" startBytecode="542" endBytecode="542" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 386]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="389" end="389" startBytecode="595" endBytecode="595" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at FileSSLServerSocket.java:[line 389]</Message>
+    </SourceLine>
+    <String value="{Statement x 2,ResultSet x 1}" role="STRING_REMAINING_OBLIGATIONS">
+      <Message>Remaining obligations: {Statement x 2,ResultSet x 1}</Message>
+    </String>
+  </BugInstance>
+  <BugInstance type="ODR_OPEN_DATABASE_RESOURCE" priority="2" rank="16" abbrev="ODR" category="BAD_PRACTICE" instanceHash="39afec207991abecbbe72d01f682a712" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to close database resource</ShortMessage>
+    <LongMessage>app.FileSSLServerSocket.incrementMessageCount(String) may fail to close Statement</LongMessage>
+    <Class classname="app.FileSSLServerSocket" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="12" end="389" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 12-389]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket" name="incrementMessageCount" signature="(Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket" start="336" end="389" startBytecode="0" endBytecode="239" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method app.FileSSLServerSocket.incrementMessageCount(String)</Message>
+    </Method>
+    <Type descriptor="Ljava/sql/Statement;" role="TYPE_CLOSEIT">
+      <SourceLine classname="java.sql.Statement" start="1096" end="1647" sourcefile="Statement.java" sourcepath="java/sql/Statement.java">
+        <Message>At Statement.java:[lines 1096-1647]</Message>
+      </SourceLine>
+      <Message>Need to close java.sql.Statement </Message>
+    </Type>
+    <SourceLine classname="app.FileSSLServerSocket" primary="true" start="342" end="342" startBytecode="30" endBytecode="30" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+      <Message>At FileSSLServerSocket.java:[line 342]</Message>
+    </SourceLine>
+    <SourceLine classname="app.FileSSLServerSocket" start="378" end="378" startBytecode="464" endBytecode="464" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java" role="SOURCE_LINE_ANOTHER_INSTANCE">
+      <Message>Another occurrence at FileSSLServerSocket.java:[line 378]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="4806f9d0ec8027ee19a4c767ad457fe8" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in new app.FileSSLServerSocket$ClientHandler(SSLSocket): new java.io.InputStreamReader(InputStream)</LongMessage>
+    <Class classname="app.FileSSLServerSocket$ClientHandler" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket$ClientHandler" start="50" end="115" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 50-115]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket$ClientHandler</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket$ClientHandler" name="&lt;init&gt;" signature="(Ljavax/net/ssl/SSLSocket;)V" isStatic="false" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket$ClientHandler" start="50" end="54" startBytecode="0" endBytecode="122" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method new app.FileSSLServerSocket$ClientHandler(SSLSocket)</Message>
+    </Method>
+    <Method classname="java.io.InputStreamReader" name="&lt;init&gt;" signature="(Ljava/io/InputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.InputStreamReader" start="76" end="79" startBytecode="0" endBytecode="85" sourcefile="InputStreamReader.java" sourcepath="java/io/InputStreamReader.java"/>
+      <Message>Called method new java.io.InputStreamReader(InputStream)</Message>
+    </Method>
+    <SourceLine classname="app.FileSSLServerSocket$ClientHandler" primary="true" start="52" end="52" startBytecode="22" endBytecode="22" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+      <Message>At FileSSLServerSocket.java:[line 52]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="5a335ffacb4dca104d07a229bd7f213" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in new app.FileSSLServerSocket$ClientHandler(SSLSocket): new java.io.OutputStreamWriter(OutputStream)</LongMessage>
+    <Class classname="app.FileSSLServerSocket$ClientHandler" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket$ClientHandler" start="50" end="115" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+        <Message>At FileSSLServerSocket.java:[lines 50-115]</Message>
+      </SourceLine>
+      <Message>In class app.FileSSLServerSocket$ClientHandler</Message>
+    </Class>
+    <Method classname="app.FileSSLServerSocket$ClientHandler" name="&lt;init&gt;" signature="(Ljavax/net/ssl/SSLSocket;)V" isStatic="false" primary="true">
+      <SourceLine classname="app.FileSSLServerSocket$ClientHandler" start="50" end="54" startBytecode="0" endBytecode="122" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java"/>
+      <Message>In method new app.FileSSLServerSocket$ClientHandler(SSLSocket)</Message>
+    </Method>
+    <Method classname="java.io.OutputStreamWriter" name="&lt;init&gt;" signature="(Ljava/io/OutputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.OutputStreamWriter" start="110" end="113" startBytecode="0" endBytecode="169" sourcefile="OutputStreamWriter.java" sourcepath="java/io/OutputStreamWriter.java"/>
+      <Message>Called method new java.io.OutputStreamWriter(OutputStream)</Message>
+    </Method>
+    <SourceLine classname="app.FileSSLServerSocket$ClientHandler" primary="true" start="53" end="53" startBytecode="44" endBytecode="44" sourcefile="FileSSLServerSocket.java" sourcepath="app/FileSSLServerSocket.java">
+      <Message>At FileSSLServerSocket.java:[line 53]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="8d3c106441e4faed94b20c79b3e4c316" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClient.initializeSSL(): new java.io.InputStreamReader(InputStream)</LongMessage>
+    <Class classname="app.SSLClient" primary="true">
+      <SourceLine classname="app.SSLClient" start="49" end="117" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+        <Message>At LoadTest.java:[lines 49-117]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClient</Message>
+    </Class>
+    <Method classname="app.SSLClient" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClient" start="57" end="81" startBytecode="0" endBytecode="374" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java"/>
+      <Message>In method app.SSLClient.initializeSSL()</Message>
+    </Method>
+    <Method classname="java.io.InputStreamReader" name="&lt;init&gt;" signature="(Ljava/io/InputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.InputStreamReader" start="76" end="79" startBytecode="0" endBytecode="85" sourcefile="InputStreamReader.java" sourcepath="java/io/InputStreamReader.java"/>
+      <Message>Called method new java.io.InputStreamReader(InputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClient" primary="true" start="77" end="77" startBytecode="159" endBytecode="159" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+      <Message>At LoadTest.java:[line 77]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="5a42d49d9e10528701312b95744ff319" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClient.initializeSSL(): new java.io.OutputStreamWriter(OutputStream)</LongMessage>
+    <Class classname="app.SSLClient" primary="true">
+      <SourceLine classname="app.SSLClient" start="49" end="117" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+        <Message>At LoadTest.java:[lines 49-117]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClient</Message>
+    </Class>
+    <Method classname="app.SSLClient" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClient" start="57" end="81" startBytecode="0" endBytecode="374" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java"/>
+      <Message>In method app.SSLClient.initializeSSL()</Message>
+    </Method>
+    <Method classname="java.io.OutputStreamWriter" name="&lt;init&gt;" signature="(Ljava/io/OutputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.OutputStreamWriter" start="110" end="113" startBytecode="0" endBytecode="169" sourcefile="OutputStreamWriter.java" sourcepath="java/io/OutputStreamWriter.java"/>
+      <Message>Called method new java.io.OutputStreamWriter(OutputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClient" primary="true" start="76" end="76" startBytecode="133" endBytecode="133" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+      <Message>At LoadTest.java:[line 76]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" priority="2" rank="20" abbrev="OBL" category="EXPERIMENTAL" instanceHash="231faaca11d4c4f7e5f887004aeeecf4" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to clean up stream or resource on checked exception</ShortMessage>
+    <LongMessage>app.SSLClient.initializeSSL() may fail to clean up java.io.InputStream on checked exception</LongMessage>
+    <Class classname="app.SSLClient" primary="true">
+      <SourceLine classname="app.SSLClient" start="49" end="117" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+        <Message>At LoadTest.java:[lines 49-117]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClient</Message>
+    </Class>
+    <Method classname="app.SSLClient" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClient" start="57" end="81" startBytecode="0" endBytecode="374" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java"/>
+      <Message>In method app.SSLClient.initializeSSL()</Message>
+    </Method>
+    <Class classname="java.io.InputStream" role="CLASS_REFTYPE">
+      <SourceLine classname="java.io.InputStream" start="61" end="786" sourcefile="InputStream.java" sourcepath="java/io/InputStream.java">
+        <Message>At InputStream.java:[lines 61-786]</Message>
+      </SourceLine>
+      <Message>Reference type java.io.InputStream</Message>
+    </Class>
+    <Int value="1" role="INT_OBLIGATIONS_REMAINING">
+      <Message>1 instances of obligation remaining</Message>
+    </Int>
+    <SourceLine classname="app.SSLClient" primary="true" start="58" end="58" startBytecode="13" endBytecode="13" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at LoadTest.java:[line 58] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.SSLClient" start="78" end="78" startBytecode="171" endBytecode="171" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at LoadTest.java:[line 78]</Message>
+    </SourceLine>
+    <SourceLine classname="app.SSLClient" start="79" end="79" startBytecode="172" endBytecode="172" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at LoadTest.java:[line 79]</Message>
+    </SourceLine>
+    <String value="{InputStream x 1}" role="STRING_REMAINING_OBLIGATIONS">
+      <Message>Remaining obligations: {InputStream x 1}</Message>
+    </String>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM" priority="2" rank="16" abbrev="OS" category="BAD_PRACTICE" instanceHash="241bd281c595792229c19813461d47ff" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to close stream</ShortMessage>
+    <LongMessage>app.SSLClient.initializeSSL() may fail to close stream</LongMessage>
+    <Class classname="app.SSLClient" primary="true">
+      <SourceLine classname="app.SSLClient" start="49" end="117" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+        <Message>At LoadTest.java:[lines 49-117]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClient</Message>
+    </Class>
+    <Method classname="app.SSLClient" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClient" start="57" end="81" startBytecode="0" endBytecode="92" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java"/>
+      <Message>In method app.SSLClient.initializeSSL()</Message>
+    </Method>
+    <Type descriptor="Ljava/io/InputStream;" role="TYPE_CLOSEIT">
+      <SourceLine classname="java.io.InputStream" start="61" end="786" sourcefile="InputStream.java" sourcepath="java/io/InputStream.java">
+        <Message>At InputStream.java:[lines 61-786]</Message>
+      </SourceLine>
+      <Message>Need to close java.io.InputStream </Message>
+    </Type>
+    <SourceLine classname="app.SSLClient" primary="true" start="58" end="58" startBytecode="7" endBytecode="7" sourcefile="LoadTest.java" sourcepath="app/LoadTest.java">
+      <Message>At LoadTest.java:[line 58]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="f7c641de782f5363ef21b72f2a697559" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClientGUI.initializeSSL(): new java.io.InputStreamReader(InputStream)</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Method classname="app.SSLClientGUI" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="29" end="55" startBytecode="0" endBytecode="383" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java"/>
+      <Message>In method app.SSLClientGUI.initializeSSL()</Message>
+    </Method>
+    <Method classname="java.io.InputStreamReader" name="&lt;init&gt;" signature="(Ljava/io/InputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.InputStreamReader" start="76" end="79" startBytecode="0" endBytecode="85" sourcefile="InputStreamReader.java" sourcepath="java/io/InputStreamReader.java"/>
+      <Message>Called method new java.io.InputStreamReader(InputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="50" end="50" startBytecode="159" endBytecode="159" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+      <Message>At SSLClientGUI.java:[line 50]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="642cfa271b9f15b3553778d5d52ebe5a" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClientGUI.initializeSSL(): new java.io.OutputStreamWriter(OutputStream)</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Method classname="app.SSLClientGUI" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="29" end="55" startBytecode="0" endBytecode="383" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java"/>
+      <Message>In method app.SSLClientGUI.initializeSSL()</Message>
+    </Method>
+    <Method classname="java.io.OutputStreamWriter" name="&lt;init&gt;" signature="(Ljava/io/OutputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.OutputStreamWriter" start="110" end="113" startBytecode="0" endBytecode="169" sourcefile="OutputStreamWriter.java" sourcepath="java/io/OutputStreamWriter.java"/>
+      <Message>Called method new java.io.OutputStreamWriter(OutputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="49" end="49" startBytecode="133" endBytecode="133" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+      <Message>At SSLClientGUI.java:[line 49]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_EXIT" priority="2" rank="16" abbrev="Dm" category="BAD_PRACTICE" instanceHash="1850c500a71c85ffd5d9d508275cb51e" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="382">
+    <ShortMessage>Method invokes System.exit(...)</ShortMessage>
+    <LongMessage>app.SSLClientGUI.initializeSSL() invokes System.exit(...), which shuts down the entire virtual machine</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Method classname="app.SSLClientGUI" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="29" end="55" startBytecode="0" endBytecode="383" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java"/>
+      <Message>In method app.SSLClientGUI.initializeSSL()</Message>
+    </Method>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="53" end="53" startBytecode="189" endBytecode="189" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+      <Message>At SSLClientGUI.java:[line 53]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" priority="2" rank="20" abbrev="OBL" category="EXPERIMENTAL" instanceHash="d555728c0402c629c360032236540be9" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to clean up stream or resource on checked exception</ShortMessage>
+    <LongMessage>app.SSLClientGUI.initializeSSL() may fail to clean up java.io.InputStream on checked exception</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Method classname="app.SSLClientGUI" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="29" end="55" startBytecode="0" endBytecode="383" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java"/>
+      <Message>In method app.SSLClientGUI.initializeSSL()</Message>
+    </Method>
+    <Class classname="java.io.InputStream" role="CLASS_REFTYPE">
+      <SourceLine classname="java.io.InputStream" start="61" end="786" sourcefile="InputStream.java" sourcepath="java/io/InputStream.java">
+        <Message>At InputStream.java:[lines 61-786]</Message>
+      </SourceLine>
+      <Message>Reference type java.io.InputStream</Message>
+    </Class>
+    <Int value="1" role="INT_OBLIGATIONS_REMAINING">
+      <Message>1 instances of obligation remaining</Message>
+    </Int>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="30" end="30" startBytecode="13" endBytecode="13" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java" role="SOURCE_LINE_OBLIGATION_CREATED">
+      <Message>Obligation to clean up resource created at SSLClientGUI.java:[line 30] is not discharged</Message>
+    </SourceLine>
+    <SourceLine classname="app.SSLClientGUI" start="51" end="51" startBytecode="171" endBytecode="171" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at SSLClientGUI.java:[line 51]</Message>
+    </SourceLine>
+    <SourceLine classname="app.SSLClientGUI" start="52" end="52" startBytecode="172" endBytecode="172" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java" role="SOURCE_LINE_PATH_CONTINUES">
+      <Message>Path continues at SSLClientGUI.java:[line 52]</Message>
+    </SourceLine>
+    <String value="{InputStream x 1}" role="STRING_REMAINING_OBLIGATIONS">
+      <Message>Remaining obligations: {InputStream x 1}</Message>
+    </String>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM" priority="2" rank="16" abbrev="OS" category="BAD_PRACTICE" instanceHash="20741a7b598b3a4561ea0365a77d9f9f" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Method may fail to close stream</ShortMessage>
+    <LongMessage>app.SSLClientGUI.initializeSSL() may fail to close stream</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Method classname="app.SSLClientGUI" name="initializeSSL" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="29" end="55" startBytecode="0" endBytecode="96" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java"/>
+      <Message>In method app.SSLClientGUI.initializeSSL()</Message>
+    </Method>
+    <Type descriptor="Ljava/io/InputStream;" role="TYPE_CLOSEIT">
+      <SourceLine classname="java.io.InputStream" start="61" end="786" sourcefile="InputStream.java" sourcepath="java/io/InputStream.java">
+        <Message>At InputStream.java:[lines 61-786]</Message>
+      </SourceLine>
+      <Message>Need to close java.io.InputStream </Message>
+    </Type>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="30" end="30" startBytecode="7" endBytecode="7" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+      <Message>At SSLClientGUI.java:[line 30]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="6bfbfa09e3dbe9d8e6fe9ffcf2cfc401" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Unread field</ShortMessage>
+    <LongMessage>Unread field: app.SSLClientGUI.sessionActive</LongMessage>
+    <Class classname="app.SSLClientGUI" primary="true">
+      <SourceLine classname="app.SSLClientGUI" start="20" end="244" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>At SSLClientGUI.java:[lines 20-244]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientGUI</Message>
+    </Class>
+    <Field classname="app.SSLClientGUI" name="sessionActive" signature="Z" isStatic="false" primary="true">
+      <SourceLine classname="app.SSLClientGUI" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+        <Message>In SSLClientGUI.java</Message>
+      </SourceLine>
+      <Message>Field app.SSLClientGUI.sessionActive</Message>
+    </Field>
+    <SourceLine classname="app.SSLClientGUI" primary="true" start="20" end="20" startBytecode="6" endBytecode="6" sourcefile="SSLClientGUI.java" sourcepath="app/SSLClientGUI.java">
+      <Message>At SSLClientGUI.java:[line 20]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="29ec43ad71b52cde52776c2fa16f73ad" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClientSocket.main(String[]): new java.io.InputStreamReader(InputStream)</LongMessage>
+    <Class classname="app.SSLClientSocket" primary="true">
+      <SourceLine classname="app.SSLClientSocket" start="8" end="66" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java">
+        <Message>At SSLClientSocket.java:[lines 8-66]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientSocket</Message>
+    </Class>
+    <Method classname="app.SSLClientSocket" name="main" signature="([Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="app.SSLClientSocket" start="13" end="66" startBytecode="0" endBytecode="728" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java"/>
+      <Message>In method app.SSLClientSocket.main(String[])</Message>
+    </Method>
+    <Method classname="java.io.InputStreamReader" name="&lt;init&gt;" signature="(Ljava/io/InputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.InputStreamReader" start="76" end="79" startBytecode="0" endBytecode="85" sourcefile="InputStreamReader.java" sourcepath="java/io/InputStreamReader.java"/>
+      <Message>Called method new java.io.InputStreamReader(InputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClientSocket" primary="true" start="35" end="35" startBytecode="141" endBytecode="141" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java">
+      <Message>At SSLClientSocket.java:[line 35]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="21d2048c31391416ad52d78fa895e6da" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in app.SSLClientSocket.main(String[]): new java.io.OutputStreamWriter(OutputStream)</LongMessage>
+    <Class classname="app.SSLClientSocket" primary="true">
+      <SourceLine classname="app.SSLClientSocket" start="8" end="66" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java">
+        <Message>At SSLClientSocket.java:[lines 8-66]</Message>
+      </SourceLine>
+      <Message>In class app.SSLClientSocket</Message>
+    </Class>
+    <Method classname="app.SSLClientSocket" name="main" signature="([Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="app.SSLClientSocket" start="13" end="66" startBytecode="0" endBytecode="728" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java"/>
+      <Message>In method app.SSLClientSocket.main(String[])</Message>
+    </Method>
+    <Method classname="java.io.OutputStreamWriter" name="&lt;init&gt;" signature="(Ljava/io/OutputStream;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.OutputStreamWriter" start="110" end="113" startBytecode="0" endBytecode="169" sourcefile="OutputStreamWriter.java" sourcepath="java/io/OutputStreamWriter.java"/>
+      <Message>Called method new java.io.OutputStreamWriter(OutputStream)</Message>
+    </Method>
+    <SourceLine classname="app.SSLClientSocket" primary="true" start="34" end="34" startBytecode="119" endBytecode="119" sourcefile="SSLClientSocket.java" sourcepath="app/SSLClientSocket.java">
+      <Message>At SSLClientSocket.java:[line 34]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="9847e5a92f133827c9c8184e1ec742ef" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in utils.SaltManager.decrypt(String): new String(byte[])</LongMessage>
+    <Class classname="utils.SaltManager" primary="true">
+      <SourceLine classname="utils.SaltManager" start="9" end="63" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+        <Message>At SaltManager.java:[lines 9-63]</Message>
+      </SourceLine>
+      <Message>In class utils.SaltManager</Message>
+    </Class>
+    <Method classname="utils.SaltManager" name="decrypt" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="utils.SaltManager" start="56" end="63" startBytecode="0" endBytecode="184" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java"/>
+      <Message>In method utils.SaltManager.decrypt(String)</Message>
+    </Method>
+    <Method classname="java.lang.String" name="&lt;init&gt;" signature="([B)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="1435" end="1436" startBytecode="0" endBytecode="64" sourcefile="String.java" sourcepath="java/lang/String.java"/>
+      <Message>Called method new String(byte[])</Message>
+    </Method>
+    <SourceLine classname="utils.SaltManager" primary="true" start="60" end="60" startBytecode="44" endBytecode="44" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+      <Message>At SaltManager.java:[line 60]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="35110e197068364e9148a2329c0a178e" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in utils.SaltManager.decrypt(String): String.getBytes()</LongMessage>
+    <Class classname="utils.SaltManager" primary="true">
+      <SourceLine classname="utils.SaltManager" start="9" end="63" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+        <Message>At SaltManager.java:[lines 9-63]</Message>
+      </SourceLine>
+      <Message>In class utils.SaltManager</Message>
+    </Class>
+    <Method classname="utils.SaltManager" name="decrypt" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="utils.SaltManager" start="56" end="63" startBytecode="0" endBytecode="184" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java"/>
+      <Message>In method utils.SaltManager.decrypt(String)</Message>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="1799" end="1799" startBytecode="0" endBytecode="56" sourcefile="String.java" sourcepath="java/lang/String.java"/>
+      <Message>Called method String.getBytes()</Message>
+    </Method>
+    <SourceLine classname="utils.SaltManager" primary="true" start="57" end="57" startBytecode="12" endBytecode="12" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+      <Message>At SaltManager.java:[line 57]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="19fbbb74260376aa515f27da6e49fee0" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in utils.SaltManager.encrypt(String): String.getBytes()</LongMessage>
+    <Class classname="utils.SaltManager" primary="true">
+      <SourceLine classname="utils.SaltManager" start="9" end="63" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+        <Message>At SaltManager.java:[lines 9-63]</Message>
+      </SourceLine>
+      <Message>In class utils.SaltManager</Message>
+    </Class>
+    <Method classname="utils.SaltManager" name="encrypt" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="utils.SaltManager" start="42" end="49" startBytecode="0" endBytecode="180" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java"/>
+      <Message>In method utils.SaltManager.encrypt(String)</Message>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="1799" end="1799" startBytecode="0" endBytecode="56" sourcefile="String.java" sourcepath="java/lang/String.java"/>
+      <Message>Called method String.getBytes()</Message>
+    </Method>
+    <SourceLine classname="utils.SaltManager" primary="true" start="43" end="43" startBytecode="12" endBytecode="12" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+      <Message>At SaltManager.java:[line 43]</Message>
+    </SourceLine>
+    <SourceLine classname="utils.SaltManager" start="45" end="45" startBytecode="29" endBytecode="29" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java" role="SOURCE_LINE_ANOTHER_INSTANCE">
+      <Message>Another occurrence at SaltManager.java:[line 45]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="35ed11587ace62f2098e20c8bc279272" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in utils.SaltManager.getSalt(String): new java.io.FileReader(String)</LongMessage>
+    <Class classname="utils.SaltManager" primary="true">
+      <SourceLine classname="utils.SaltManager" start="9" end="63" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+        <Message>At SaltManager.java:[lines 9-63]</Message>
+      </SourceLine>
+      <Message>In class utils.SaltManager</Message>
+    </Class>
+    <Method classname="utils.SaltManager" name="getSalt" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true" primary="true">
+      <SourceLine classname="utils.SaltManager" start="25" end="36" startBytecode="0" endBytecode="388" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java"/>
+      <Message>In method utils.SaltManager.getSalt(String)</Message>
+    </Method>
+    <Method classname="java.io.FileReader" name="&lt;init&gt;" signature="(Ljava/lang/String;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.FileReader" start="60" end="61" startBytecode="0" endBytecode="68" sourcefile="FileReader.java" sourcepath="java/io/FileReader.java"/>
+      <Message>Called method new java.io.FileReader(String)</Message>
+    </Method>
+    <SourceLine classname="utils.SaltManager" primary="true" start="25" end="25" startBytecode="14" endBytecode="14" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+      <Message>At SaltManager.java:[line 25]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" instanceHash="9b92e101bdf65d08720933a747a17bfd" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in utils.SaltManager.saveSalt(String, String): new java.io.FileWriter(String, boolean)</LongMessage>
+    <Class classname="utils.SaltManager" primary="true">
+      <SourceLine classname="utils.SaltManager" start="9" end="63" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+        <Message>At SaltManager.java:[lines 9-63]</Message>
+      </SourceLine>
+      <Message>In class utils.SaltManager</Message>
+    </Class>
+    <Method classname="utils.SaltManager" name="saveSalt" signature="(Ljava/lang/String;Ljava/lang/String;)V" isStatic="true" primary="true">
+      <SourceLine classname="utils.SaltManager" start="15" end="21" startBytecode="0" endBytecode="273" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java"/>
+      <Message>In method utils.SaltManager.saveSalt(String, String)</Message>
+    </Method>
+    <Method classname="java.io.FileWriter" name="&lt;init&gt;" signature="(Ljava/lang/String;Z)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.FileWriter" start="84" end="85" startBytecode="0" endBytecode="79" sourcefile="FileWriter.java" sourcepath="java/io/FileWriter.java"/>
+      <Message>Called method new java.io.FileWriter(String, boolean)</Message>
+    </Method>
+    <SourceLine classname="utils.SaltManager" primary="true" start="15" end="15" startBytecode="11" endBytecode="11" sourcefile="SaltManager.java" sourcepath="utils/SaltManager.java">
+      <Message>At SaltManager.java:[line 15]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="BAD_PRACTICE">
+    <Description>Bad practice</Description>
+  </BugCategory>
+  <BugCategory category="PERFORMANCE">
+    <Description>Performance</Description>
+  </BugCategory>
+  <BugCategory category="EXPERIMENTAL">
+    <Description>Experimental</Description>
+  </BugCategory>
+  <BugCategory category="I18N">
+    <Description>Internationalization</Description>
+  </BugCategory>
+  <BugPattern type="DMI_RANDOM_USED_ONLY_ONCE" abbrev="DMI" category="BAD_PRACTICE">
+    <ShortDescription>Random object created and used only once</ShortDescription>
+    <Details><![CDATA[
+
+<p> This code creates a java.util.Random object, uses it to generate one random number, and then discards
+the Random object. This produces mediocre quality random numbers and is inefficient.
+If possible, rewrite the code so that the Random object is created once and saved, and each time a new random number
+is required invoke a method on the existing Random object to obtain it.
+</p>
+
+<p>If it is important that the generated Random numbers not be guessable, you <em>must</em> not create a new Random for each random
+number; the values are too easily guessable. You should strongly consider using a java.security.SecureRandom instead
+(and avoid allocating a new SecureRandom for each random number needed).
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="ODR_OPEN_DATABASE_RESOURCE" abbrev="ODR" category="BAD_PRACTICE">
+    <ShortDescription>Method may fail to close database resource</ShortDescription>
+    <Details><![CDATA[
+
+<p> The method creates a database resource (such as a database connection
+or row set), does not assign it to any
+fields, pass it to other methods, or return it, and does not appear to close
+the object on all paths out of the method.&nbsp; Failure to
+close database resources on all paths out of a method may
+result in poor performance, and could cause the application to
+have problems communicating with the database.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="DM_DEFAULT_ENCODING" abbrev="Dm" category="I18N">
+    <ShortDescription>Reliance on default encoding</ShortDescription>
+    <Details><![CDATA[
+
+<p> Found a call to a method which will perform a byte to String (or String to byte) conversion,
+and will assume that the default platform encoding is suitable. This will cause the application
+behavior to vary between platforms. Use an alternative API and specify a charset name or Charset
+object explicitly.</p>
+
+      ]]></Details>
+  </BugPattern>
+  <BugPattern type="URF_UNREAD_FIELD" abbrev="UrF" category="PERFORMANCE">
+    <ShortDescription>Unread field</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="DM_EXIT" abbrev="Dm" category="BAD_PRACTICE" cweid="382">
+    <ShortDescription>Method invokes System.exit(...)</ShortDescription>
+    <Details><![CDATA[
+
+  <p> Invoking System.exit shuts down the entire Java virtual machine. This
+   should only been done when it is appropriate. Such calls make it
+   hard or impossible for your code to be invoked by other code.
+   Consider throwing a RuntimeException instead.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="OBL_UNSATISFIED_OBLIGATION" abbrev="OBL" category="EXPERIMENTAL">
+    <ShortDescription>Method may fail to clean up stream or resource</ShortDescription>
+    <Details><![CDATA[
+          
+          <p>
+          This method may fail to clean up (close, dispose of) a stream,
+          database object, or other
+          resource requiring an explicit cleanup operation.
+          </p>
+
+          <p>
+          In general, if a method opens a stream or other resource,
+          the method should use a try/finally block to ensure that
+          the stream or resource is cleaned up before the method
+          returns.
+          </p>
+
+          <p>
+          This bug pattern is essentially the same as the
+          OS_OPEN_STREAM and ODR_OPEN_DATABASE_RESOURCE
+          bug patterns, but is based on a different
+          (and hopefully better) static analysis technique.
+          We are interested is getting feedback about the
+          usefulness of this bug pattern.
+          For sending feedback, check:
+          </p>
+          <ul>
+            <li><a href="https://github.com/spotbugs/spotbugs/blob/master/.github/CONTRIBUTING.md">contributing guideline</a></li>
+            <li><a href="https://github.com/spotbugs/discuss/issues?q=">mailinglist</a></li>
+          </ul>
+
+          <p>
+          In particular,
+          the false-positive suppression heuristics for this
+          bug pattern have not been extensively tuned, so
+          reports about false positives are helpful to us.
+          </p>
+
+          <p>
+          See Weimer and Necula, <i>Finding and Preventing Run-Time Error Handling Mistakes</i>
+          (<a href="https://people.eecs.berkeley.edu/~necula/Papers/rte_oopsla04.pdf">PDF</a>),
+          for a description of the analysis technique.
+          </p>
+          
+      ]]></Details>
+  </BugPattern>
+  <BugPattern type="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" abbrev="OBL" category="EXPERIMENTAL">
+    <ShortDescription>Method may fail to clean up stream or resource on checked exception</ShortDescription>
+    <Details><![CDATA[
+          
+          <p>
+          This method may fail to clean up (close, dispose of) a stream,
+          database object, or other
+          resource requiring an explicit cleanup operation.
+          </p>
+
+          <p>
+          In general, if a method opens a stream or other resource,
+          the method should use a try/finally block to ensure that
+          the stream or resource is cleaned up before the method
+          returns.
+          </p>
+
+          <p>
+          This bug pattern is essentially the same as the
+          OS_OPEN_STREAM and ODR_OPEN_DATABASE_RESOURCE
+          bug patterns, but is based on a different
+          (and hopefully better) static analysis technique.
+          We are interested is getting feedback about the
+          usefulness of this bug pattern.
+          For sending feedback, check:
+          </p>
+          <ul>
+            <li><a href="https://github.com/spotbugs/spotbugs/blob/master/.github/CONTRIBUTING.md">contributing guideline</a></li>
+            <li><a href="https://github.com/spotbugs/discuss/issues?q=">mailinglist</a></li>
+          </ul>
+
+          <p>
+          In particular,
+          the false-positive suppression heuristics for this
+          bug pattern have not been extensively tuned, so
+          reports about false positives are helpful to us.
+          </p>
+
+          <p>
+          See Weimer and Necula, <i>Finding and Preventing Run-Time Error Handling Mistakes</i>
+          (<a href="https://people.eecs.berkeley.edu/~necula/Papers/rte_oopsla04.pdf">PDF</a>),
+          for a description of the analysis technique.
+          </p>
+          
+      ]]></Details>
+  </BugPattern>
+  <BugPattern type="OS_OPEN_STREAM" abbrev="OS" category="BAD_PRACTICE">
+    <ShortDescription>Method may fail to close stream</ShortDescription>
+    <Details><![CDATA[
+
+<p> The method creates an IO stream object, does not assign it to any
+fields, pass it to other methods that might close it,
+or return it, and does not appear to close
+the stream on all paths out of the method.&nbsp; This may result in
+a file descriptor leak.&nbsp; It is generally a good
+idea to use a <code>finally</code> block to ensure that streams are
+closed.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="DMI" cweid="440">
+    <Description>Dubious method invocation</Description>
+  </BugCode>
+  <BugCode abbrev="OS">
+    <Description>Stream not closed on all paths</Description>
+  </BugCode>
+  <BugCode abbrev="OBL">
+    <Description>Unsatisfied obligation to clean up stream or resource</Description>
+  </BugCode>
+  <BugCode abbrev="UrF">
+    <Description>Unread field</Description>
+  </BugCode>
+  <BugCode abbrev="Dm">
+    <Description>Dubious method used</Description>
+  </BugCode>
+  <BugCode abbrev="ODR">
+    <Description>Database resource not closed on all paths</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Mon, 21 Apr 2025 10:58:00 +0200" total_classes="9" referenced_classes="136" total_bugs="24" total_size="621" num_packages="2" java_version="18.0.2.1" vm_version="18.0.2.1+1-1" cpu_seconds="4.55" clock_seconds="3.74" peak_mbytes="201.28" alloc_mbytes="512.00" gc_seconds="0.07" priority_2="9" priority_1="15">
+    <FileStats path="app/FileSSLServerSocket.java" bugCount="7" size="247" bugHash="4342a6837da88a09694ba5395926df85"/>
+    <FileStats path="app/LoadTest.java" bugCount="4" size="78" bugHash="29c7767da7c4d1d93d2f932da0c8a74c"/>
+    <FileStats path="app/SSLClientGUI.java" bugCount="6" size="181" bugHash="54d87a3c40dda87e74f75161aac845fe"/>
+    <FileStats path="app/SSLClientSocket.java" bugCount="2" size="40" bugHash="9956d8216cc2c219e58ae678609bc951"/>
+    <FileStats path="utils/SaltManager.java" bugCount="5" size="39" bugHash="cc75fa24be09222710b2940db2acdb40"/>
+    <FileStats path="utils/ViewDatabase.java" bugCount="0" size="36"/>
+    <PackageStats package="app" total_bugs="19" total_types="7" total_size="546" priority_2="9" priority_1="10">
+      <ClassStats class="app.FileSSLServerSocket" sourceFile="FileSSLServerSocket.java" interface="false" size="192" bugs="5" priority_2="3" priority_1="2"/>
+      <ClassStats class="app.FileSSLServerSocket$ClientHandler" sourceFile="FileSSLServerSocket.java" interface="false" size="55" bugs="2" priority_1="2"/>
+      <ClassStats class="app.LoadTest" sourceFile="LoadTest.java" interface="false" size="19" bugs="0"/>
+      <ClassStats class="app.SSLClient" sourceFile="LoadTest.java" interface="false" size="59" bugs="4" priority_2="2" priority_1="2"/>
+      <ClassStats class="app.SSLClientGUI" sourceFile="SSLClientGUI.java" interface="false" size="165" bugs="6" priority_2="4" priority_1="2"/>
+      <ClassStats class="app.SSLClientGUI$1" sourceFile="SSLClientGUI.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="app.SSLClientSocket" sourceFile="SSLClientSocket.java" interface="false" size="40" bugs="2" priority_1="2"/>
+    </PackageStats>
+    <PackageStats package="utils" total_bugs="5" total_types="2" total_size="75" priority_1="5">
+      <ClassStats class="utils.SaltManager" sourceFile="SaltManager.java" interface="false" size="39" bugs="5" priority_1="5"/>
+      <ClassStats class="utils.ViewDatabase" sourceFile="ViewDatabase.java" interface="false" size="36" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="687" invocations="1097" avgMicrosecondsPerInvocation="626" maxMicrosecondsPerInvocation="19333" standardDeviationMicrosecondsPerInvocation="1554"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="331" invocations="1102" avgMicrosecondsPerInvocation="300" maxMicrosecondsPerInvocation="33598" standardDeviationMicrosecondsPerInvocation="1063"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="194" invocations="136" avgMicrosecondsPerInvocation="1433" maxMicrosecondsPerInvocation="15548" standardDeviationMicrosecondsPerInvocation="2425"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="171" invocations="136" avgMicrosecondsPerInvocation="1262" maxMicrosecondsPerInvocation="12694" standardDeviationMicrosecondsPerInvocation="1965"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="115" invocations="370" avgMicrosecondsPerInvocation="313" maxMicrosecondsPerInvocation="6478" standardDeviationMicrosecondsPerInvocation="489"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.StreamResourceTracker" totalMilliseconds="115" invocations="143" avgMicrosecondsPerInvocation="809" maxMicrosecondsPerInvocation="9113" standardDeviationMicrosecondsPerInvocation="1316"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="76" invocations="73" avgMicrosecondsPerInvocation="1052" maxMicrosecondsPerInvocation="11401" standardDeviationMicrosecondsPerInvocation="1958"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="75" invocations="136" avgMicrosecondsPerInvocation="551" maxMicrosecondsPerInvocation="8132" standardDeviationMicrosecondsPerInvocation="1063"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="71" invocations="199" avgMicrosecondsPerInvocation="361" maxMicrosecondsPerInvocation="22511" standardDeviationMicrosecondsPerInvocation="1639"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="70" invocations="71" avgMicrosecondsPerInvocation="988" maxMicrosecondsPerInvocation="6446" standardDeviationMicrosecondsPerInvocation="1466"/>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="67" invocations="54" avgMicrosecondsPerInvocation="1245" maxMicrosecondsPerInvocation="22304" standardDeviationMicrosecondsPerInvocation="3111"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="63" invocations="1054" avgMicrosecondsPerInvocation="59" maxMicrosecondsPerInvocation="1863" standardDeviationMicrosecondsPerInvocation="134"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="62" invocations="54" avgMicrosecondsPerInvocation="1150" maxMicrosecondsPerInvocation="10071" standardDeviationMicrosecondsPerInvocation="1984"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="52" invocations="54" avgMicrosecondsPerInvocation="964" maxMicrosecondsPerInvocation="12403" standardDeviationMicrosecondsPerInvocation="1798"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.CalledMethods" totalMilliseconds="46" invocations="136" avgMicrosecondsPerInvocation="340" maxMicrosecondsPerInvocation="4234" standardDeviationMicrosecondsPerInvocation="583"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.EqualsOperandShouldHaveClassCompatibleWithThis" totalMilliseconds="46" invocations="136" avgMicrosecondsPerInvocation="338" maxMicrosecondsPerInvocation="28618" standardDeviationMicrosecondsPerInvocation="2443"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BuildObligationPolicyDatabase" totalMilliseconds="45" invocations="136" avgMicrosecondsPerInvocation="333" maxMicrosecondsPerInvocation="3264" standardDeviationMicrosecondsPerInvocation="513"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.UnconditionalValueDerefDataflowFactory" totalMilliseconds="44" invocations="54" avgMicrosecondsPerInvocation="817" maxMicrosecondsPerInvocation="8618" standardDeviationMicrosecondsPerInvocation="1455"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

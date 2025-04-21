@@ -97,12 +97,12 @@ jobs:
 
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
-          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -xml=spotbugs-report.xml 
+          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -X
           echo "==> Archivos tras SpotBugs:"
           ls -la 
 
       - name: Ver contenido del informe Spotbugs
-        run: cat spotbugs-report.xml
+        run: cat spotbugsXml.xml
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
@@ -110,7 +110,7 @@ jobs:
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=SpotBugs Scan" \
-            --form "file=@PAI2_ST10/spotbugs-report.xml;type=application/xml" \
+            --form "file=@PAI2_ST10/spotbugsXml.xml;type=application/xml" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
