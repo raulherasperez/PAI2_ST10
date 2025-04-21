@@ -20,6 +20,9 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
+      - name: Crear carpeta reports
+        run: mkdir -p reports
+
       - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output reports/trivy-iac-report.json
@@ -62,6 +65,9 @@ jobs:
 
       - name: Instalar Maven
         run: sudo apt-get install -y maven
+
+      - name: Crear carpeta reports
+        run: mkdir -p reports
 
       - name: Ejecutar Dependency-Check (Generar informe JSON)
         run: |
@@ -108,6 +114,9 @@ jobs:
       - name: Instalar Maven
         run: sudo apt-get install -y maven
 
+      - name: Crear carpeta reports
+        run: mkdir -p reports
+
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
           cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -X
@@ -122,8 +131,7 @@ jobs:
           fi
 
       - name: Mover informe de SpotBugs a la carpeta reports
-        run: |
-          mv PAI2_ST10/target/spotbugsXml.xml reports/spotbugs-report.xml
+        run: mv PAI2_ST10/target/spotbugsXml.xml reports/spotbugs-report.xml
 
       - name: Publicar informe de SpotBugs en DefectDojo
         id: import-scan
@@ -154,6 +162,9 @@ jobs:
 
       - name: Instalar Maven
         run: sudo apt-get install -y maven
+
+      - name: Crear carpeta reports
+        run: mkdir -p reports
 
       - name: Instalar dependencias
         run: |
@@ -204,6 +215,9 @@ jobs:
 
       - name: Instalar Maven
         run: sudo apt-get install -y maven
+
+      - name: Crear carpeta reports
+        run: mkdir -p reports
 
       - name: Instalar dependencias
         run: |
