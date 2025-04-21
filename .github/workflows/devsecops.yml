@@ -31,16 +31,16 @@ jobs:
 
       - name: Enviar informe de Trivy a DefectDojo
         run: |
-           curl -X POST -v  \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Trivy Scan" \
-            --form "file=@trivy-iac-report.json;type=application/json" \
-            --form "scan_date=$(date +%F)" \
-            --form "active=true" \
-            --form "verified=false" \
-            --form "minimum_severity=Low" \
-            "${{ secrets.DEFECTDOJO_URL }}api/v2/import-scan/"
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "scan_type=Trivy Scan" \
+            -F "file=@trivy-iac-report.json" \
+            -F "scan_date=$(date +%F)" \
+            -F "active=true" \
+            -F "verified=false" \
+            -F "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sca:
     runs-on: ubuntu-latest
@@ -70,16 +70,16 @@ jobs:
 
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
-           curl -X POST -v  \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Dependency Check Scan" \
-            --form "file=@dependency-check-report.json;type=application/json" \
-            --form "scan_date=$(date +%F)" \
-            --form "active=true" \
-            --form "verified=false" \
-            --form "minimum_severity=Low" \
-            "${{ secrets.DEFECTDOJO_URL }}api/v2/import-scan/"
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "scan_type=Dependency Check Scan" \
+            -F "file=@dependency-check-report.json" \
+            -F "scan_date=$(date +%F)" \
+            -F "active=true" \
+            -F "verified=false" \
+            -F "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sast:
     runs-on: ubuntu-latest
@@ -107,16 +107,16 @@ jobs:
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
-           curl -X POST -v \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=SpotBugs Scan" \
-            --form "file=@PAI2_ST10/target/spotbugsXml.xml;type=application/xml" \
-            --form "scan_date=$(date +%F)" \
-            --form "active=true" \
-            --form "verified=false" \
-            --form "minimum_severity=Low" \
-            "${{ secrets.DEFECTDOJO_URL }}api/v2/import-scan/"
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "scan_type=SpotBugs Scan" \
+            -F "file=@PAI2_ST10/target/spotbugsXml.xml" \
+            -F "scan_date=$(date +%F)" \
+            -F "active=true" \
+            -F "verified=false" \
+            -F "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   dast:
     runs-on: ubuntu-latest
@@ -151,16 +151,16 @@ jobs:
 
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
-           curl -X POST -v  \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=ZAP Scan" \
-            --form "file=@zap-report.json;type=application/json" \
-            --form "scan_date=$(date +%F)" \
-            --form "active=true" \
-            --form "verified=false" \
-            --form "minimum_severity=Low" \
-            "${{ secrets.DEFECTDOJO_URL }}api/v2/import-scan/"
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "scan_type=ZAP Scan" \
+            -F "file=@zap-report.json" \
+            -F "scan_date=$(date +%F)" \
+            -F "active=true" \
+            -F "verified=false" \
+            -F "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   iast:
     runs-on: ubuntu-latest
@@ -198,13 +198,13 @@ jobs:
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
-           curl -X POST -v  \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Semgrep SARIF" \
-            --form "file=@semgrep-report.sarif;type=application/sarif+json" \
-            --form "scan_date=$(date +%F)" \
-            --form "active=true" \
-            --form "verified=false" \
-            --form "minimum_severity=Low" \
-            "${{ secrets.DEFECTDOJO_URL }}api/v2/import-scan/"
+            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
+            -F "scan_type=Semgrep SARIF" \
+            -F "file=@semgrep-report.sarif" \
+            -F "scan_date=$(date +%F)" \
+            -F "active=true" \
+            -F "verified=false" \
+            -F "minimum_severity=Low" \
+            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
