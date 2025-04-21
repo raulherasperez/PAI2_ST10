@@ -8,7 +8,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+    
 jobs:
   iac:
     runs-on: ubuntu-latest
@@ -23,9 +23,14 @@ jobs:
       - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
+          cat trivy-iac-report.json # Verificar el contenido del archivo
 
       - name: Enviar informe de Trivy a DefectDojo
         run: |
+          if [ ! -f trivy-iac-report.json ]; then
+            echo "El archivo trivy-iac-report.json no se generó correctamente"
+            exit 1
+          fi
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             -H "Content-Type: application/json" \
@@ -58,9 +63,14 @@ jobs:
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
+          cat dependency-check-report.json # Verificar el contenido del archivo
 
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
+          if [ ! -f dependency-check-report.json ]; then
+            echo "El archivo dependency-check-report.json no se generó correctamente"
+            exit 1
+          fi
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             -H "Content-Type: application/json" \
@@ -91,9 +101,14 @@ jobs:
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
           cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:spotbugs
-          
+          cat PAI2_ST10/target/spotbugsXml.xml # Verificar el contenido del archivo
+
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
+          if [ ! -f PAI2_ST10/target/spotbugsXml.xml ]; then
+            echo "El archivo spotbugsXml.xml no se generó correctamente"
+            exit 1
+          fi
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             -H "Content-Type: application/xml" \
@@ -131,9 +146,14 @@ jobs:
             -t https://host.docker.internal:3343 \
             -J zap-report.json \
             -r zap-report.html
+          cat zap-report.json # Verificar el contenido del archivo
 
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
+          if [ ! -f zap-report.json ]; then
+            echo "El archivo zap-report.json no se generó correctamente"
+            exit 1
+          fi
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             -H "Content-Type: application/json" \
@@ -171,9 +191,14 @@ jobs:
       - name: Ejecutar Semgrep (Generar informe SARIF)
         run: |
           semgrep --config=auto --exclude target --exclude .git . --sarif > semgrep-report.sarif
+          cat semgrep-report.sarif # Verificar el contenido del archivo
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
+          if [ ! -f semgrep-report.sarif ]; then
+            echo "El archivo semgrep-report.sarif no se generó correctamente"
+            exit 1
+          fi
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             -H "Content-Type: application/json" \
