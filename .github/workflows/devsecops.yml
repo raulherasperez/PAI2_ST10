@@ -26,7 +26,7 @@ jobs:
 
       - name: Enviar informe de Trivy a DefectDojo
         run: |
-          curl -X POST \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Trivy Scan" \
@@ -60,7 +60,7 @@ jobs:
 
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
-          curl -X POST \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Dependency Check Scan" \
@@ -92,7 +92,7 @@ jobs:
           
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
-          curl -X POST \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=SpotBugs Scan" \
@@ -131,7 +131,7 @@ jobs:
 
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
-          curl -X POST \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=ZAP Scan" \
@@ -170,7 +170,7 @@ jobs:
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
-          curl -X POST \
+          curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Semgrep JSON Report" \
