@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Instalar Trivy
         run: |
@@ -33,28 +33,26 @@ jobs:
             exit 1
           fi
 
-      - name: Ver contenido del informe Trivy
-        run: cat trivy-iac-report.json
+      - name: Publicar informe de Trivy en DefectDojo
+        id: import-scan
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTDOJO_API_KEY }}
+          defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
+          file: trivy-iac-report.json
+          scan_type: Trivy Scan
+          engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
-      - name: Enviar informe de Trivy a DefectDojo
+      - name: Mostrar respuesta
         run: |
-          curl -X POST -v \
-            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "scan_type=Trivy Scan" \
-            -F "file=@trivy-iac-report.json" \
-            -F "scan_date=$(date +%F)" \
-            -F "active=true" \
-            -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -H "Content-Type: multipart/form-data" \
-            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
+          set -e
+          printf '%s\n' '${{ steps.import-scan.outputs.response }}'
 
   sca:
     runs-on: ubuntu-latest
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Configurar Java
         uses: actions/setup-java@v3
@@ -80,28 +78,26 @@ jobs:
             exit 1
           fi
 
-      - name: Ver contenido del informe DependencyCheck
-        run: cat dependency-check-report.json
+      - name: Publicar informe de Dependency-Check en DefectDojo
+        id: import-scan
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTDOJO_API_KEY }}
+          defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
+          file: dependency-check-report.json
+          scan_type: Dependency Check Scan
+          engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
-      - name: Enviar informe de Dependency-Check a DefectDojo
+      - name: Mostrar respuesta
         run: |
-          curl -X POST -v \
-            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "scan_type=Dependency Check Scan" \
-            -F "file=@dependency-check-report.json" \
-            -F "scan_date=$(date +%F)" \
-            -F "active=true" \
-            -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -H "Content-Type: multipart/form-data" \
-            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
+          set -e
+          printf '%s\n' '${{ steps.import-scan.outputs.response }}'
 
   sast:
     runs-on: ubuntu-latest
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Configurar Java
         uses: actions/setup-java@v3
@@ -125,28 +121,26 @@ jobs:
             exit 1
           fi
 
-      - name: Ver contenido del informe Spotbugs
-        run: cat PAI2_ST10/target/spotbugsXml.xml
+      - name: Publicar informe de SpotBugs en DefectDojo
+        id: import-scan
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTDOJO_API_KEY }}
+          defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
+          file: PAI2_ST10/target/spotbugsXml.xml
+          scan_type: SpotBugs Scan
+          engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
-      - name: Enviar informe de SpotBugs a DefectDojo
+      - name: Mostrar respuesta
         run: |
-          curl -X POST -v \
-            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "scan_type=SpotBugs Scan" \
-            -F "file=@PAI2_ST10/target/spotbugsXml.xml" \
-            -F "scan_date=$(date +%F)" \
-            -F "active=true" \
-            -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -H "Content-Type: multipart/form-data" \
-            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
+          set -e
+          printf '%s\n' '${{ steps.import-scan.outputs.response }}'
 
   dast:
     runs-on: ubuntu-latest
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Configurar Java
         uses: actions/setup-java@v3
@@ -177,28 +171,26 @@ jobs:
             exit 1
           fi
 
-      - name: Ver contenido del informe ZAP
-        run: cat zap-report.json
+      - name: Publicar informe de ZAP en DefectDojo
+        id: import-scan
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTDOJO_API_KEY }}
+          defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
+          file: zap-report.json
+          scan_type: ZAP Scan
+          engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
-      - name: Enviar informe de OWASP ZAP a DefectDojo
+      - name: Mostrar respuesta
         run: |
-          curl -X POST -v \
-            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "scan_type=ZAP Scan" \
-            -F "file=@zap-report.json" \
-            -F "scan_date=$(date +%F)" \
-            -F "active=true" \
-            -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -H "Content-Type: multipart/form-data" \
-            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
+          set -e
+          printf '%s\n' '${{ steps.import-scan.outputs.response }}'
 
   iast:
     runs-on: ubuntu-latest
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Configurar Java
         uses: actions/setup-java@v3
@@ -232,19 +224,17 @@ jobs:
             exit 1
           fi
 
-      - name: Ver contenido del informe Semgrep
-        run: cat semgrep-report.sarif
+      - name: Publicar informe de Semgrep en DefectDojo
+        id: import-scan
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTDOJO_API_KEY }}
+          defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
+          file: semgrep-report.sarif
+          scan_type: Semgrep Scan
+          engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
-      - name: Enviar informe de Semgrep a DefectDojo
+      - name: Mostrar respuesta
         run: |
-          curl -X POST -v \
-            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -F "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            -F "scan_type=Semgrep Scan" \
-            -F "file=@semgrep-report.sarif" \
-            -F "scan_date=$(date +%F)" \
-            -F "active=true" \
-            -F "verified=false" \
-            -F "minimum_severity=Low" \
-            -H "Content-Type: multipart/form-data" \
-            "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
+          set -e
+          printf '%s\n' '${{ steps.import-scan.outputs.response }}'
