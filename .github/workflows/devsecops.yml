@@ -102,7 +102,7 @@ jobs:
           ls -la 
 
       - name: Ver contenido del informe Spotbugs
-        run: cat spotbugsXml.xml
+        run: cat PAI2_ST10/target/spotbugsXml.xml
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
@@ -110,7 +110,7 @@ jobs:
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=SpotBugs Scan" \
-            --form "file=@PAI2_ST10/spotbugsXml.xml;type=application/xml" \
+            --form "file=@PAI2_ST10/target/spotbugsXml.xml;type=application/xml" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
