@@ -97,7 +97,7 @@ jobs:
 
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
-          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -Dspotbugs.output=xml -Dspotbugs.outputFile=spotbugs-report.xml
+          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -xml=spotbugs-report.xml 
           echo "==> Archivos tras SpotBugs:"
           ls -la 
 
