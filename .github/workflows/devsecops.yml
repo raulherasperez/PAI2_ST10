@@ -40,6 +40,7 @@ jobs:
             -F "active=true" \
             -F "verified=false" \
             -F "minimum_severity=Low" \
+            -H "Content-Type: multipart/form-data" \
             "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sca:
@@ -79,6 +80,7 @@ jobs:
             -F "active=true" \
             -F "verified=false" \
             -F "minimum_severity=Low" \
+            -H "Content-Type: multipart/form-data" \
             "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   sast:
@@ -116,6 +118,7 @@ jobs:
             -F "active=true" \
             -F "verified=false" \
             -F "minimum_severity=Low" \
+            -H "Content-Type: multipart/form-data" \
             "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   dast:
@@ -160,6 +163,7 @@ jobs:
             -F "active=true" \
             -F "verified=false" \
             -F "minimum_severity=Low" \
+            -H "Content-Type: multipart/form-data" \
             "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
 
   iast:
@@ -207,4 +211,5 @@ jobs:
             -F "active=true" \
             -F "verified=false" \
             -F "minimum_severity=Low" \
+            -H "Content-Type: multipart/form-data" \
             "${{ secrets.DEFECTDOJO_URL }}/api/v2/import-scan/"
