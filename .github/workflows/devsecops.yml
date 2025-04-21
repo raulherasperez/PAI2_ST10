@@ -28,9 +28,10 @@ jobs:
         run: |
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Trivy Scan" \
-            --form "file=@trivy-iac-report.json;type=application/json" \
+            --form "file=@trivy-iac-report.json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -62,9 +63,10 @@ jobs:
         run: |
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Dependency Check Scan" \
-            --form "file=@dependency-check-report.json;type=application/json" \
+            --form "file=@dependency-check-report.json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -94,9 +96,10 @@ jobs:
         run: |
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -H "Content-Type: application/xml" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=SpotBugs Scan" \
-            --form "file=@PAI2_ST10/target/spotbugsXml.xml;type=application/xml" \
+            --form "file=@PAI2_ST10/target/spotbugsXml.xml" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -133,9 +136,10 @@ jobs:
         run: |
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=ZAP Scan" \
-            --form "file=@zap-report.json;type=application/json" \
+            --form "file=@zap-report.json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -172,9 +176,10 @@ jobs:
         run: |
           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Semgrep JSON Report" \
-            --form "file=@semgrep-report.sarif;type=application/json" \
+            --form "file=@semgrep-report.sarif" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
