@@ -8,7 +8,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-    
+
 jobs:
   iac:
     runs-on: ubuntu-latest
@@ -23,20 +23,19 @@ jobs:
       - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
           trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
-          cat trivy-iac-report.json # Verificar el contenido del archivo
+          echo "==> Archivos tras Trivy:"
+          ls -la
+
+      - name: Ver contenido del informe Trivy
+        run: cat trivy-iac-report.json
 
       - name: Enviar informe de Trivy a DefectDojo
         run: |
-          if [ ! -f trivy-iac-report.json ]; then
-            echo "El archivo trivy-iac-report.json no se generó correctamente"
-            exit 1
-          fi
-          curl -X POST -v \
+           curl -X POST -v  \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Trivy Scan" \
-            --form "file=@trivy-iac-report.json" \
+            --form "file=@trivy-iac-report.json;type=application/json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -63,20 +62,19 @@ jobs:
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
           ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
-          cat dependency-check-report.json # Verificar el contenido del archivo
+          echo "==> Archivos tras Dependency-Check:"
+          ls -la
+
+      - name: Ver contenido del informe DependencyCheck
+        run: cat dependency-check-report.json
 
       - name: Enviar informe de Dependency-Check a DefectDojo
         run: |
-          if [ ! -f dependency-check-report.json ]; then
-            echo "El archivo dependency-check-report.json no se generó correctamente"
-            exit 1
-          fi
-          curl -X POST -v \
+           curl -X POST -v  \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=Dependency Check Scan" \
-            --form "file=@dependency-check-report.json" \
+            --form "file=@dependency-check-report.json;type=application/json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -100,21 +98,20 @@ jobs:
 
       - name: Ejecutar análisis con SpotBugs (Generar informe XML)
         run: |
-          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:spotbugs
-          cat PAI2_ST10/target/spotbugsXml.xml # Verificar el contenido del archivo
+          cd PAI2_ST10 && mvn clean install -Ddependency-check.skip=true spotbugs:check -X
+          echo "==> Archivos tras SpotBugs:"
+          ls -la 
+
+      - name: Ver contenido del informe Spotbugs
+        run: cat PAI2_ST10/target/spotbugsXml.xml
 
       - name: Enviar informe de SpotBugs a DefectDojo
         run: |
-          if [ ! -f PAI2_ST10/target/spotbugsXml.xml ]; then
-            echo "El archivo spotbugsXml.xml no se generó correctamente"
-            exit 1
-          fi
-          curl -X POST -v \
+           curl -X POST -v \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -H "Content-Type: application/xml" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=SpotBugs Scan" \
-            --form "file=@PAI2_ST10/target/spotbugsXml.xml" \
+            --form "file=@PAI2_ST10/target/spotbugsXml.xml;type=application/xml" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -140,26 +137,25 @@ jobs:
         run: |
           cd PAI2_ST10 && mvn clean install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true
 
-      - name: Ejecutar OWASP ZAP DAST (Generar informe JSON)
+      - name: Ejecutar OWASP ZAP DAST (Generar informes HTML y JSON)
         run: |
           docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
             -t https://host.docker.internal:3343 \
             -J zap-report.json \
             -r zap-report.html
-          cat zap-report.json # Verificar el contenido del archivo
+          echo "==> Archivos tras OWASP ZAP:"
+          ls -la
+
+      - name: Ver contenido del informe ZAP
+        run: cat zap-report.json
 
       - name: Enviar informe de OWASP ZAP a DefectDojo
         run: |
-          if [ ! -f zap-report.json ]; then
-            echo "El archivo zap-report.json no se generó correctamente"
-            exit 1
-          fi
-          curl -X POST -v \
+           curl -X POST -v  \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
             --form "scan_type=ZAP Scan" \
-            --form "file=@zap-report.json" \
+            --form "file=@zap-report.json;type=application/json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
@@ -188,23 +184,25 @@ jobs:
       - name: Instalar Semgrep
         run: pip install semgrep
 
-      - name: Ejecutar Semgrep (Generar informe SARIF)
+      - name: Ejecutar la aplicación con Semgrep IAST (Generar informe SARIF)
         run: |
+          nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
+          echo "Esperando a que la aplicación inicie..."
+          sleep 30
           semgrep --config=auto --exclude target --exclude .git . --sarif > semgrep-report.sarif
-          cat semgrep-report.sarif # Verificar el contenido del archivo
+          echo "==> Archivos tras Semgrep:"
+          ls -la
+
+      - name: Ver contenido del informe Semgrep
+        run: cat semgrep-report.sarif
 
       - name: Enviar informe de Semgrep a DefectDojo
         run: |
-          if [ ! -f semgrep-report.sarif ]; then
-            echo "El archivo semgrep-report.sarif no se generó correctamente"
-            exit 1
-          fi
-          curl -X POST -v \
+           curl -X POST -v  \
             -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
-            -H "Content-Type: application/json" \
             --form "engagement=${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}" \
-            --form "scan_type=Semgrep JSON Report" \
-            --form "file=@semgrep-report.sarif" \
+            --form "scan_type=Semgrep SARIF" \
+            --form "file=@semgrep-report.sarif;type=application/sarif+json" \
             --form "scan_date=$(date +%F)" \
             --form "active=true" \
             --form "verified=false" \
