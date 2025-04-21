@@ -22,13 +22,13 @@ jobs:
 
       - name: Ejecutar Trivy para IaC (Generar informe JSON)
         run: |
-          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-iac-report.json
+          trivy fs . --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output reports/trivy-iac-report.json
           echo "==> Archivos tras Trivy:"
           ls -la
 
       - name: Verificar si el informe de Trivy existe
         run: |
-          if [ ! -f trivy-iac-report.json ]; then
+          if [ ! -f reports/trivy-iac-report.json ]; then
             echo "Error: El informe de Trivy no se ha generado."
             exit 1
           fi
@@ -39,7 +39,7 @@ jobs:
         with:
           token: ${{ secrets.DEFECTDOJO_API_KEY }}
           defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
-          file: trivy-iac-report.json
+          file: reports/trivy-iac-report.json
           scan_type: Trivy Scan
           engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
@@ -67,13 +67,13 @@ jobs:
         run: |
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
           unzip dependency-check-8.4.0-release.zip
-          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out dependency-check-report.json
+          ./dependency-check/bin/dependency-check.sh --project gestor-bancario --scan . --disableAssembly --format JSON --out reports/dependency-check-report.json
           echo "==> Archivos tras Dependency-Check:"
           ls -la
 
       - name: Verificar si el informe de Dependency-Check existe
         run: |
-          if [ ! -f dependency-check-report.json ]; then
+          if [ ! -f reports/dependency-check-report.json ]; then
             echo "Error: El informe de Dependency-Check no se ha generado."
             exit 1
           fi
@@ -84,7 +84,7 @@ jobs:
         with:
           token: ${{ secrets.DEFECTDOJO_API_KEY }}
           defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
-          file: dependency-check-report.json
+          file: reports/dependency-check-report.json
           scan_type: Dependency Check Scan
           engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
@@ -121,13 +121,17 @@ jobs:
             exit 1
           fi
 
+      - name: Mover informe de SpotBugs a la carpeta reports
+        run: |
+          mv PAI2_ST10/target/spotbugsXml.xml reports/spotbugs-report.xml
+
       - name: Publicar informe de SpotBugs en DefectDojo
         id: import-scan
         uses: ivanamat/defectdojo-import-scan@v1
         with:
           token: ${{ secrets.DEFECTDOJO_API_KEY }}
           defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
-          file: PAI2_ST10/target/spotbugsXml.xml
+          file: reports/spotbugs-report.xml
           scan_type: SpotBugs Scan
           engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
@@ -159,14 +163,14 @@ jobs:
         run: |
           docker run --rm -u root -v $(pwd):/zap/wrk -t zaproxy/zap-stable zap-full-scan.py \
             -t https://host.docker.internal:3343 \
-            -J zap-report.json \
-            -r zap-report.html
+            -J reports/zap-report.json \
+            -r reports/zap-report.html
           echo "==> Archivos tras OWASP ZAP:"
           ls -la
 
       - name: Verificar si el informe de ZAP existe
         run: |
-          if [ ! -f zap-report.json ]; then
+          if [ ! -f reports/zap-report.json ]; then
             echo "Error: El informe de ZAP no se ha generado."
             exit 1
           fi
@@ -177,7 +181,7 @@ jobs:
         with:
           token: ${{ secrets.DEFECTDOJO_API_KEY }}
           defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
-          file: zap-report.json
+          file: reports/zap-report.json
           scan_type: ZAP Scan
           engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
@@ -213,13 +217,13 @@ jobs:
           nohup java -jar target/mi-aplicacion.jar > app.log 2>&1 &
           echo "Esperando a que la aplicación inicie..."
           sleep 30
-          semgrep --config=auto --exclude target --exclude .git . --sarif > semgrep-report.sarif
+          semgrep --config=auto --exclude target --exclude .git . --sarif > reports/semgrep-report.sarif
           echo "==> Archivos tras Semgrep:"
           ls -la
 
       - name: Verificar si el informe de Semgrep existe
         run: |
-          if [ ! -f semgrep-report.sarif ]; then
+          if [ ! -f reports/semgrep-report.sarif ]; then
             echo "Error: El informe de Semgrep no se ha generado."
             exit 1
           fi
@@ -230,7 +234,7 @@ jobs:
         with:
           token: ${{ secrets.DEFECTDOJO_API_KEY }}
           defectdojo_url: ${{ secrets.DEFECTDOJO_URL }}
-          file: semgrep-report.sarif
+          file: reports/semgrep-report.sarif
           scan_type: Semgrep Scan
           engagement: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
 
